@@ -39,6 +39,8 @@ var options: any = {
  * This is returning a string array for the cache but I'm not sure about how I want it to work.
  * The next step is loading a MIO, I guess.
  * I'm almost giving up tho. I HATE how every single request contains a bunch of HTML stuff.
+ * Maybe we should use python or another language where it's easier to parse HTML.
+ * I shouldn't say it out loud but maybe PHP......
  */
 export async function login(k: string, cookie: string, id: string, password: string): Promise<string[]> {
     options['headers']['cookie'] = cookie; 
