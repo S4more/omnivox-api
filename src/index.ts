@@ -8,7 +8,6 @@ import {NewDocument} from "./modules/NewDocuments";
 dotenv.config();
 const cookieManager = new CookieManager();
 
-
 async function login() {
     const loginCookies = new LoginCookies(cookieManager);
 

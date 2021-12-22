@@ -16,7 +16,7 @@ export class Login extends OmnivoxModule<void> {
             cookie,
             form: {
                 k: this.k,
-                NoDA: process.env.username,
+                NoDA: process.env.user_name,
                 PasswordEtu: process.env.password
             }
         }
