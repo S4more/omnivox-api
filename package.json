@@ -13,6 +13,7 @@
     "@types/tough-cookie": "^4.0.1",
     "axios": "^0.24.0",
     "axios-cookiejar-support": "^2.0.3",
+    "dotenv": "^10.0.0",
     "node-fetch": "^3.1.0",
     "qs": "^6.10.2",
     "request": "^2.88.2",
