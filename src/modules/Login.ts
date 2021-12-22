@@ -1,11 +1,12 @@
 import request from "request";
 import {OmnivoxModule, Params} from "./OmnivoxModule";
+import { CookieManager } from "../CookieManager";
 
-export class Login extends OmnivoxModule<string[]> {
+export class Login extends OmnivoxModule<void> {
     private readonly url = 'https://dawsoncollege.omnivox.ca/intr/Module/Identification/Login/Login.aspx';
 
-    constructor(private k: string) {
-        super();
+    constructor(cookie: CookieManager, private k: string) {
+        super(cookie);
     }
 
     protected getParams(cookie: string): Params {
@@ -21,7 +22,7 @@ export class Login extends OmnivoxModule<string[]> {
         }
     }
 
-    protected parse(body: request.Response): string[] {
-        return body.headers["set-cookie"] || [];
+    protected parse(body: request.Response): void {
+        //return body.headers["set-cookie"] || [];
     }
 }

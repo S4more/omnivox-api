@@ -1,4 +1,5 @@
 import request from "request";
+import {CookieManager} from "../CookieManager";
 export interface Params {
     method: 'POST' | 'GET';
     url: string;
@@ -17,10 +18,14 @@ export abstract class OmnivoxModule<T> {
         return c;
     }
 
-    async get(cookie: string): Promise<T> {
+    constructor(protected cookieManager: CookieManager) {
+    }
+
+    async get(): Promise<T> {
         return new Promise<T>(resolve => {
-            this.makeRequest(cookie)
+            this.makeRequest(this.cookieManager.getCacheString())
                 .on('complete', r => {
+                    this.cookieManager.addCookies(r.headers["set-cookie"] || []);
                     resolve(this.parse(r));
                 });
         });
