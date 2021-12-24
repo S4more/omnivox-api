@@ -18,7 +18,7 @@ export class Login extends OmnivoxModule<void> {
                 k: this.k,
                 NoDA: process.env.user_name,
                 PasswordEtu: process.env.password
-            }
+            },
         }
     }
 

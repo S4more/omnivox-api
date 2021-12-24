@@ -5,6 +5,7 @@ export interface Params {
     url: string;
     cookie?: string;
     form?: any;
+    followRedirect?: boolean
 }
 
 export abstract class OmnivoxModule<T> {
@@ -14,7 +15,7 @@ export abstract class OmnivoxModule<T> {
     protected makeRequest(cookie: string): request.Request {
         const options = this.generateOptions(this.getParams(cookie));
         // The request needs to be bind to a callback to work. For some reason...
-        const c = request(options, (_, __) => {});
+        const c = request(options, (_, __) => {}); 
         return c;
     }
 
@@ -24,7 +25,7 @@ export abstract class OmnivoxModule<T> {
     async get(): Promise<T> {
         return new Promise<T>(resolve => {
             this.makeRequest(this.cookieManager.getCacheString())
-                .on('complete', r => {
+                .once('complete', r => {
                     this.cookieManager.addCookies(r.headers["set-cookie"] || []);
                     resolve(this.parse(r));
                 });
@@ -51,15 +52,15 @@ export abstract class OmnivoxModule<T> {
             'accept-language': 'en-GB,en;q=0.9',
             'host': 'dawsoncollege.omnivox.ca',
             connection: 'close',
-            cookie: options.cookie
+            cookie: options.cookie,
           };
           let config = {
               method: options.method,
               url: options.url,
               headers,
-              form: options.form
+              form: options.form,
+              followRedirect: options.followRedirect
           }
-
           return config;
 
       }
