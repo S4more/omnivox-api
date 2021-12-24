@@ -4,10 +4,12 @@ import * as dotenv from 'dotenv';
 import {CookieManager} from './CookieManager';
 import {MioCookie} from "./modules/MioCookie";
 import {Mio} from "./modules/Mio";
+import {MioSend} from "./modules/mio/MioSend";
 import {LeaCookie} from "./modules/lea/LeaCookie";
 import {LeaSkyCookie} from "./modules/lea/LeaSkyCookie";
 import {Lea} from "./modules/lea/Lea";
 import {MioDetail} from "./modules/MioDetail";
+import {MioGetCompose} from "./modules/mio/MioGetCompose";
 
 dotenv.config();
 const cookieManager = new CookieManager();
@@ -24,16 +26,21 @@ async function loadTokens() {
 
 async function loadMio() {
     await loadTokens();
-    const mios = await new Mio(cookieManager).get();
+    const param = await new MioGetCompose(cookieManager).get();
+    console.log(param.ctl00$cntFormulaire$hidIdRechercheIndividu);
+    //await new MioSend(cookieManager, param, 
+                      //{title: 'Jesus christ. You did it', 'message': "Im proud"}
+                     //).get();
+    //const mios = await new Mio(cookieManager).get();
 
-    let keys = [...mios.keys()];
-    for (let key of keys) {
-        console.log(`Loading ${mios.get(key)}`);
-        console.log("------------------------");
-        console.log(await new MioDetail(cookieManager, key).get());
-        console.log("------------------------");
-        await new Promise(r => setTimeout(r, 2000));
-    }
+ //   let keys = [...mios.keys()];
+ //   for (let key of keys) {
+ //       console.log(`Loading ${mios.get(key)}`);
+ //       console.log("------------------------");
+ //       console.log(await new MioDetail(cookieManager, key).get());
+ //       console.log("------------------------");
+ //       await new Promise(r => setTimeout(r, 2000));
+ //   }
 }
 
 async function loadLea() {
@@ -42,7 +49,7 @@ async function loadLea() {
     await new LeaSkyCookie(cookieManager).get();
     const classes = await new Lea(cookieManager).get();
     console.log(classes);
-
 }
 
-loadLea();
+//loadLea();
+loadMio();
