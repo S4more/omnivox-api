@@ -14,4 +14,4 @@ Features:
 user_name=your_username_here
 password=yourpasswordhere
 ```
-4. npm run run (Not working on some pcs for some reason?)
+4. `npm run run` (Not working on some pcs for some reason?)
