@@ -4,6 +4,9 @@ import * as dotenv from 'dotenv';
 import {CookieManager} from './CookieManager';
 import {MioCookie} from "./modules/MioCookie";
 import {Mio} from "./modules/Mio";
+import {LeaCookie} from "./modules/lea/LeaCookie";
+import {LeaSkyCookie} from "./modules/lea/LeaSkyCookie";
+import {Lea} from "./modules/lea/Lea";
 import {MioDetail} from "./modules/MioDetail";
 
 dotenv.config();
@@ -33,4 +36,13 @@ async function loadMio() {
     }
 }
 
-loadMio();
+async function loadLea() {
+    await loadTokens();
+    await new LeaCookie(cookieManager).get();
+    await new LeaSkyCookie(cookieManager).get();
+    const classes = await new Lea(cookieManager).get();
+    console.log(classes);
+
+}
+
+loadLea();
