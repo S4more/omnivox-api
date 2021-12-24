@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "run": "npx tsc; node build/index.js"
   },
   "devDependencies": {
     "@types/node": "^17.0.0",
