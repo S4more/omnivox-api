@@ -6,7 +6,10 @@ import {LeaLoginError} from "../errors/LoginError";
 export class Login extends OmnivoxModule<void> {
     private readonly url = 'https://dawsoncollege.omnivox.ca/intr/Module/Identification/Login/Login.aspx';
 
-    constructor(cookie: CookieManager, private k: string) {
+    constructor(cookie: CookieManager,
+                private k: string,
+                private username: string,
+                private password: string) {
         super(cookie);
     }
 
@@ -17,8 +20,8 @@ export class Login extends OmnivoxModule<void> {
             cookie,
             form: {
                 k: this.k,
-                NoDA: process.env.user_name,
-                PasswordEtu: process.env.password
+                NoDA: this.username,
+                PasswordEtu: this.password
             },
         }
     }

@@ -17,6 +17,9 @@ export class MioManager {
     private cachedMios: Mio[] = [];
     private cachedPreviews: MioPreview[] = [];
     
+    public async loadMioPreview(): Promise<MioPreview[]> {
+        return await new MioLoadPreviewList(this.cookieManager).get();
+    }
 
     public async loadMioById(id: string): Promise<Mio> {
         if (this.cachedMios.length != 0) {

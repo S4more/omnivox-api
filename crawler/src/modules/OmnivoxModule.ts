@@ -26,11 +26,15 @@ export abstract class OmnivoxModule<T> {
     }
 
     async get(): Promise<T> {
-        return new Promise<T>(resolve => {
+        return new Promise<T>((resolve, reject) => {
             this.makeRequest(this.cookieManager.getCacheString())
                 .once('complete', r => {
                     this.cookieManager.addCookies(r.headers["set-cookie"] || []);
-                    resolve(this.parse(r));
+                    try {
+                        resolve(this.parse(r));
+                    } catch (e) {
+                        reject(e);
+                    }
                 });
         });
     }
