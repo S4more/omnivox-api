@@ -38,6 +38,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(cookieParser());
 router.use(session({'secret': 'this is my secret', 'resave': true, 'saveUninitialized': true}));
+let logged: string[] = [];
 
 /** Rules of our API */
 router.use(async (req, res, next) => {
@@ -50,17 +51,25 @@ router.use(async (req, res, next) => {
         return res.status(200).json({});
     }
 
+    if (!logged.includes(req.session.id) && req.path != '/api/login') {
+        return res.status(200).json("not logged in");
+    }
+
 
     next();
 });
 
 router.use('/api/login', async (req, res, next) => {
+    if (req.method != 'POST') {
+        return res.status(405).json("login uses post");
+    }
     let ses = req.session;
-    ses.username = req.query.username as string;
-    ses.password = req.query.password as string;
+    ses.username = req.body.username as string;
+    ses.password = req.body.password as string;
     try {
         ses.omnivoxCookie = (await omnivoxLogin(ses.username!, ses.password!)).getCache();
-        res.status(200).json("Logged in!");
+        logged.push(ses.id);
+        return res.status(200).json("Logged in!");
     } catch (error) {
         res.status(200).json(error);
         ses.destroy(() => console.log(JSON.stringify(error)));
@@ -75,7 +84,6 @@ router.use('/api/lea', leaRoutes);
 /** Error handling */
 router.use((req, res, next) => {
     const error = new Error('Not found');
-
     res.status(404).json({
         message: error.message
     });

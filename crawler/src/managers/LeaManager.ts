@@ -9,10 +9,10 @@ export class LeaManager {
 
     private constructor(private cookieManager: CookieManager) {}
 
-    async getClass(param: {teacher?: string, name?: string, code?: string}) {
+    async getClass(param: {teacher?: string, name?: string, code?: string}): Promise<LeaClass | undefined> {
         if (!this.isCacheLoaded()) await this.getAllClasses();
 
-        if (param.teacher) return this.classesCache.find(c => c.teacher.includes(param.teacher!.toUpperCase()));
+        if (param.teacher) return this.classesCache.find(c => c.teacher.toUpperCase().includes(param.teacher!.toUpperCase()));
         if (param.name) return this.classesCache.find(c => c.title.includes(param.name!.toUpperCase()));
         if (param.code) return this.classesCache.find(c => c.code === param.code!.toUpperCase());
 

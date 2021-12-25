@@ -17,4 +17,29 @@ router.get('/getClasses', async (req: Request, res: Response, next: NextFunction
     });
 });
 
+router.get('/getClassByName', async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.name) {
+        const data = await leaManager[req.session.id].getClass({name: req.query.name as string});
+        return res.status(200).json(data);
+    }
+    return res.status(422).json("missing name parameter");
+});
+
+router.get('/getClassByCode', async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.code) {
+        const data = await leaManager[req.session.id].getClass({code: req.query.code as string});
+        return res.status(200).json(data);
+    }
+    return res.status(422).json("Missing code parameter");
+});
+
+router.get('/getClassByTeacher', async (req: Request, res: Response) => {
+    console.log(req.query.name);
+    if (req.query.name) {
+        const data = await leaManager[req.session.id].getClass({teacher: req.query.name as string});
+        return res.status(200).json(data);
+    }
+    return res.status(422).json("missing name parameter");
+});
+
 export default router;
