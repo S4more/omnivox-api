@@ -1,7 +1,5 @@
 import express, {NextFunction, Request, Response} from 'express';
-import {MioManager } from "../../../crawler/src/index";
-import {MioSendData} from '../../../crawler/src/modules/mio/MioSend';
-import {SearchUser} from '../../../crawler/src/types/SearchUser';
+import {MioManager} from "omnivox-crawler";
 const router = express.Router()
 
 const mioManager: {[id: string]: MioManager} = {};

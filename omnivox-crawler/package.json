@@ -1,5 +1,6 @@
 {
   "name": "omnivox-crawler",
+  "main": "build/index.js",
   "version": "1.0.0",
   "scripts": {
     "start": "node build/index.js",

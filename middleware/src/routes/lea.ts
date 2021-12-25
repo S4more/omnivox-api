@@ -1,5 +1,5 @@
 import express, {NextFunction, Request, Response} from 'express';
-import {LeaManager} from "../../../crawler/src/index";
+import {LeaManager} from "omnivox-crawler";
 const router = express.Router()
 
 const leaManager: {[id: string]: LeaManager} = {};

@@ -7,7 +7,7 @@ import mioRoutes from './routes/mio';
 import leaRoutes from './routes/lea';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-import {login as omnivoxLogin } from '../../crawler/src';
+import {login as omnivoxLogin } from 'omnivox-crawler';
 
 const NAMESPACE = 'Server';
 const router = express();
