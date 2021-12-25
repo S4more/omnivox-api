@@ -1,6 +1,5 @@
 
 import console from "console";
-import { loadMio } from "../index";
 
 async function getId() {
     const { AuthPrompt } = require('enquirer');
