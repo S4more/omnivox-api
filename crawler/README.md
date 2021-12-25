@@ -3,7 +3,8 @@
 Features:  
 - [x] Load mios
 - [x] Read "X new documents from your teacher"
-- [ ] LEA stuff
+- [X] LEA stuff
+- [X] Read and send mios
 
 ## How to run:
 0. Clone the repo
