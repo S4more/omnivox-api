@@ -1,11 +1,14 @@
-import request from "request";
+import request, {CoreOptions, UrlOptions} from "request";
+import {IStringifyOptions} from "qs";
 import {CookieManager} from "../CookieManager";
 export interface Params {
     method: 'POST' | 'GET';
     url: string;
     cookie?: string;
     form?: any;
-    followRedirect?: boolean
+    followRedirect?: boolean,
+    json?: boolean,
+    qsStringifyOptions?: IStringifyOptions; 
 }
 
 export abstract class OmnivoxModule<T> {
@@ -16,6 +19,9 @@ export abstract class OmnivoxModule<T> {
         const options = this.generateOptions(this.getParams(cookie));
         // The request needs to be bind to a callback to work. For some reason...
         const c = request(options, (_, __) => {}); 
+        if (options.json == true) {
+            console.log(c.headers);
+        }
         return c;
     }
 
@@ -36,14 +42,22 @@ export abstract class OmnivoxModule<T> {
         let headers = {
             cookie: options.cookie,
           };
-          let config = {
+          let config: CoreOptions & UrlOptions = {
               method: options.method,
               url: options.url,
               headers,
-              form: options.form,
-              followRedirect: options.followRedirect
-          }
-          return config;
+              followRedirect: options.followRedirect,
+              json: options.json,
+              qsStringifyOptions: options.qsStringifyOptions,
+              qsParseOptions: options.qsStringifyOptions
+              }
 
+          if (options.json) {
+              config['json'] = options.form;
+          } else {
+              config['form'] = options.form;
+          }
+
+          return config;
       }
 }

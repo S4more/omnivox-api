@@ -23,11 +23,12 @@ export class MioSend extends OmnivoxModule<void> {
             url: this.url,
             method: 'POST',
             cookie,
-            form: this.form
+            form: this.form,
         }
     }
 
     protected parse(body: request.Response): void {
+        console.log(body.body);
         //return body.headers["set-cookie"] || [];
     }
 }
