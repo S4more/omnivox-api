@@ -28,7 +28,6 @@ export class MioSend extends OmnivoxModule<void> {
     }
 
     protected parse(body: request.Response): void {
-        console.log(body.body);
         //return body.headers["set-cookie"] || [];
     }
 }

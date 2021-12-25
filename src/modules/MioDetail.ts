@@ -1,12 +1,14 @@
 import { Params, OmnivoxModule } from "./OmnivoxModule";
 import request from "request";
 import {CookieManager} from "../CookieManager";
-import {decodeHTMLCharCodes, decodeHTMLEntities} from "../utils/HTMLDecoder";
+import { removeSpaces } from "../utils/HTMLDecoder";
+import { Mio } from "../types/mio/Mio";
+import parse from "node-html-parser";
 
-export class MioDetail extends OmnivoxModule<string> {
+export class MioDetail extends OmnivoxModule<Mio> {
     private readonly url: string = 'https://dawsoncollege.omnivox.ca/WebApplication/Module.MIOE/Commun/Message/MioDetail.aspx';
 
-    constructor(cookieManager: CookieManager, id: string) {
+    constructor(cookieManager: CookieManager, private id: string) {
         super(cookieManager);
         this.url = this.url + `?m=${id}`;
     }
@@ -19,19 +21,25 @@ export class MioDetail extends OmnivoxModule<string> {
         }
     }
 
-    protected parse(response: request.Response): string {
+    protected parse(response: request.Response): Mio {
         const body: string = response.body;
+        const root = parse(body);
+        let messageBody = root.querySelector("#contenuWrapper")!
+                                .text;
 
-        let messageBody = body.match("<div id='contenuWrapper'>.*<\/div>")![0];
-        messageBody = messageBody.substring("<div id='contenuWrapper'>".length,
-                                            messageBody.length - "</div>".length);
+        messageBody = removeSpaces(messageBody);
+        const from: string = root.querySelector(".cDe")!.textContent;
+        const to: string = root.querySelector("#tdACont")!.textContent;
+        const title: string = root.querySelector(".cSujet")!.textContent;
+        const date: string = root.querySelector(".cDate")!.textContent;
 
-        const brRegex = new RegExp("<br>", "gm");
-        messageBody = messageBody.replace(brRegex, "\n");
-
-        messageBody = decodeHTMLEntities(messageBody);
-        messageBody = decodeHTMLCharCodes(messageBody);
-
-        return messageBody;
+        return {
+            id: this.id,
+            author: from,
+            recipient: to,
+            title,
+            date,
+            content: messageBody,
+        }
     }
 }

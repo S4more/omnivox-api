@@ -3,12 +3,11 @@ import {LoginCookies} from "./modules/LoginCookies";
 import * as dotenv from 'dotenv';
 import {CookieManager} from './CookieManager';
 import {MioCookie} from "./modules/MioCookie";
-import {Mio} from "./modules/Mio";
 import {MioSend} from "./modules/mio/MioSend";
 import {LeaCookie} from "./modules/lea/LeaCookie";
 import {LeaSkyCookie} from "./modules/lea/LeaSkyCookie";
 import {Lea} from "./modules/lea/Lea";
-import {MioDetail} from "./modules/MioDetail";
+import {MioManager} from "./managers/MioManager";
 import {MioGetCompose} from "./modules/mio/MioGetCompose";
 import {MioGetSearchPanel} from "./modules/mio/MioGetSearchPanel";
 import {MioGetSearchPanelCookie} from "./modules/mio/MioGetSearchPanelCookie";
@@ -16,6 +15,7 @@ import {MioSearchUser} from "./modules/mio/MioSearchUser";
 import {SearchUser} from "./types/SearchUser";
 import {AddUserAsRecipient} from "./modules/mio/MioAddUserAsRecipient";
 import {MioSaveRecipient} from "./modules/mio/MioSaveRecipient";
+import {MioLoadPreviewList} from "./modules/Mio";
 
 dotenv.config();
 const cookieManager = new CookieManager();
@@ -27,36 +27,11 @@ async function login() {
 }
 async function loadTokens() {
     await login();
-    await new MioCookie(cookieManager).get();
+    //await new MioCookie(cookieManager).get();
 }
 
 async function loadMio() {
     await loadTokens();
-    const param = await new MioGetCompose(cookieManager).get();
-    await new MioGetSearchPanelCookie(cookieManager, {
-        AnSession: '2021',
-        OidCreateur: param.ctl00$cntFormulaire$hidAjout
-    }).get();
-    const token = await new MioGetSearchPanel(cookieManager, {
-        AnSession: '2021',
-        OidCreateur: param.ctl00$cntFormulaire$hidAjout
-    }).get();
-
-    param.ctl00$cntFormulaire$hidIdRechercheIndividu=token.toString();
-
-    const searchUsers: SearchUser[] = await new MioSearchUser(cookieManager, {
-        name: "Guilherme Correa",
-        idRechercheIndividu: token
-    }).get();
-
-    searchUsers.forEach(async user => {
-        await new AddUserAsRecipient(cookieManager, user, token).get();
-        await new MioSaveRecipient(cookieManager, token).get();
-    })
-
-    console.log(token.toString());
-
-    await new MioSend(cookieManager, param, {'title': "Title", 'message': "Message"}).get();
 }
 
 async function loadLea() {
@@ -67,5 +42,10 @@ async function loadLea() {
     console.log(classes);
 }
 
-//loadLea();
-loadMio();
+login().then(async () => {
+        const mioManager = await MioManager.build(cookieManager.getCache());
+        const users = await mioManager.getUserList("Guilherme");
+        const user = users.filter(user => user.Numero === "2035536");
+        await mioManager.sendMio(user, {'title': 'This was sent by an API', 'message': 'One day of work and it finally is here.'});
+    }
+)

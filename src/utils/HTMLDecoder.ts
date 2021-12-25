@@ -19,3 +19,8 @@ export function decodeHTMLCharCodes(str: string) {
 
   return str;
 }
+export function removeSpaces(str: string): string {
+    const removeWhiteSpace = new RegExp(" {2,}|" + String.fromCharCode(160) + "{2,}", "gm");
+    return str.replace(removeWhiteSpace, '\n');
+    //return str.replace(/ /g, 'k');
+}

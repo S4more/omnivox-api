@@ -19,9 +19,6 @@ export abstract class OmnivoxModule<T> {
         const options = this.generateOptions(this.getParams(cookie));
         // The request needs to be bind to a callback to work. For some reason...
         const c = request(options, (_, __) => {}); 
-        if (options.json == true) {
-            console.log(c.headers);
-        }
         return c;
     }
 

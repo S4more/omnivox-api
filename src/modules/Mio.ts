@@ -1,36 +1,34 @@
 import request from "request";
 import {OmnivoxModule, Params} from "./OmnivoxModule";
-import { decodeHTMLEntities, decodeHTMLCharCodes } from "../utils/HTMLDecoder";
+import {MioPreview} from "../types/mio/MioPreview";
+import parse from "node-html-parser";
+import {removeSpaces} from "../utils/HTMLDecoder";
 
-type MioID = Map<string, string>;
-
-export class Mio extends OmnivoxModule<MioID> {
+export class MioLoadPreviewList extends OmnivoxModule<MioPreview[]> {
     private readonly url: string = 'https://dawsoncollege.omnivox.ca/WebApplication/Module.MIOE/Commun/Message/MioListe.aspx';
 
-    protected parse(response: request.Response): MioID {
-        let body: string = response.body;
-        let regexExp = new RegExp("<em\>.*<\/em>", 'g');
-        let titles: string[] = [...body.matchAll(regexExp)].
-            map(match => {
-                let title = match[0];
-                //title = title.substring(4, title.length - 5);
-                title = decodeHTMLEntities(title);
-                title = decodeHTMLCharCodes(title);
-                return title;
-            }
-        );
-
+    protected parse(response: request.Response): MioPreview[] {
         let idRegex: RegExp = new RegExp("chk.{37}", 'gm');
-        let ids: string[] = [...body.matchAll(idRegex)].
-            map(match => match[0].substring(3));
+        let body: string = response.body;
+        const root = parse(body);
+        const list: MioPreview[] = [];
 
-        const map: MioID = new Map();
 
-        for (let i = 0; i < titles.length; i++) {
-            map.set(ids[i], titles[i]);
+        const authors = root.querySelectorAll(".name").map(el => el.text);
+        const titles = root.querySelectorAll(".lsTdTitle > div > em").map(el => el.text);
+        const shortDescs: string[] = root.querySelectorAll(".lsTdTitle > div").map(el => removeSpaces(el.text));
+        let ids: string[] = [...body.matchAll(idRegex)].map(match => match[0].substring(3));
+
+        for (let i = 0; i < ids[i].length; i++) {
+            list.push({
+                id: ids[i],
+                title: titles[i],
+                shortDesc: shortDescs[i],
+                author: authors[i]
+            });
         }
 
-        return map;
+        return list;
     }
 
     protected getParams(cookie: string): Params {
@@ -40,5 +38,4 @@ export class Mio extends OmnivoxModule<MioID> {
             cookie,
         }
     }
-
 }

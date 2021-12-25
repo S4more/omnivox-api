@@ -9,6 +9,10 @@ export class CookieManager {
         return [...this.cookie.values()].join('; ');
     }
 
+    getCache(): string[] {
+        return [...this.cookie.values()];
+    }
+
     private setCache(cookie: string[]) {
         cookie.forEach(c => {
             const key = c.substring(0, c.search("="));
