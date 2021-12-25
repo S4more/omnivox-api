@@ -35,5 +35,6 @@ export class AddUserAsRecipient extends OmnivoxModule<void> {
     }
 
     protected parse(response: request.Response) {
+        console.log(response.body);
     }
 }

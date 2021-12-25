@@ -16,19 +16,25 @@ import {SearchUser} from "../types/SearchUser";
 export class MioManager {
     private cachedMios: Mio[] = [];
     private cachedPreviews: MioPreview[] = [];
+    private cachedUsers: Map<string, SearchUser> = new Map();
+    private cacheSize = 1000; 
     
     public async loadMioPreview(): Promise<MioPreview[]> {
         return await new MioLoadPreviewList(this.cookieManager).get();
     }
 
     public async loadMioById(id: string): Promise<Mio> {
-        if (this.cachedMios.length != 0) {
-            const mio: Mio | undefined = this.cachedMios.find(mio => mio.id === id);
-            if (mio) return mio;
+        try {
+            if (this.cachedMios.length != 0) {
+                const mio: Mio | undefined = this.cachedMios.find(mio => mio.id === id);
+                if (mio) return mio;
+            }
+            const mio = await new MioDetail(this.cookieManager, id).get();
+            this.cachedMios.push(mio);
+            return mio;
+        } catch (error) {
+            throw error;
         }
-        const mio = await new MioDetail(this.cookieManager, id).get();
-        this.cachedMios.push(mio);
-        return mio;
     }
 
     public async getUserList(name: string): Promise<SearchUser[]> {
@@ -36,6 +42,10 @@ export class MioManager {
             'name': name, 
             'idRechercheIndividu': this.searchRechercheIndividu
         }).get();
+
+        users.forEach(u => {
+            this.cacheUser(u);
+        })
 
         return users;
     }
@@ -47,6 +57,18 @@ export class MioManager {
         users.forEach(async user => await new AddUserAsRecipient(this.cookieManager, user, token).get());
         await new MioSaveRecipient(this.cookieManager, token).get();
         await new MioSend(this.cookieManager, param, data).get();
+    }
+
+    public getCachedUserByID(studentID: string) {
+        return this.cachedUsers.get(studentID);
+    }
+
+    private cacheUser(user: SearchUser) {
+        if (this.cachedUsers.size >= this.cacheSize &&
+            !this.cachedUsers.has(user.Numero)) {
+            this.cachedUsers.delete(this.cachedUsers.keys().next().value)
+        }
+        this.cachedUsers.set(user.Numero, user);
     }
 
     /** Use only one search instead of creating a new one every

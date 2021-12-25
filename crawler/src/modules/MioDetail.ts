@@ -24,8 +24,12 @@ export class MioDetail extends OmnivoxModule<Mio> {
     protected parse(response: request.Response): Mio {
         const body: string = response.body;
         const root = parse(body);
-        let messageBody = root.querySelector("#contenuWrapper")!
-                                .text;
+
+        const contenuWrapper = root.querySelector("#contenuWrapper");
+        if (!contenuWrapper) { throw new Error("mio not found") };
+
+        let messageBody = root.querySelector("#contenuWrapper")!.text;
+
 
         messageBody = removeSpaces(messageBody);
         const from: string = root.querySelector(".cDe")!.textContent;

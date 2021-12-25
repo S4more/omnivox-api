@@ -26,5 +26,6 @@ export class MioSaveRecipient extends OmnivoxModule<void> {
     }
 
     protected parse(response: request.Response) {
+        console.log(response.body);
     }
 }

@@ -2,7 +2,8 @@
   "name": "middleware",
   "version": "1.0.0",
   "description": "",
-  "main": "build/server.js",
+  "main": "./build/server.js",
+  "type": "module",
   "scripts": {
     "start": "node build/index.js",
     "run": "npx tsc; node build/server.js"
