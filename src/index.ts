@@ -32,10 +32,12 @@ async function loadLea() {
     console.log(classes);
 }
 
-login().then(async () => {
-        const mioManager = await MioManager.build(cookieManager.getCache());
-        const users = await mioManager.getUserList("Guilherme");
-        const user = users.filter(user => user.Numero === "2035536");
-        await mioManager.sendMio(user, {'title': 'This was sent by an API', 'message': 'One day of work and it finally is here.'});
-    }
-)
+login();
+
+//login().then(async () => {
+//        const mioManager = await MioManager.build(cookieManager.getCache());
+//        const users = await mioManager.getUserList("Guilherme");
+//        const user = users.filter(user => user.Numero === "2035536");
+//        await mioManager.sendMio(user, {'title': 'This was sent by an API', 'message': 'One day of work and it finally is here.'});
+//    }
+//)
