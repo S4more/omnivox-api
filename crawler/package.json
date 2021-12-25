@@ -1,4 +1,6 @@
 {
+  "name": "omnivox-crawler",
+  "version": "1.0.0",
   "scripts": {
     "start": "node build/index.js",
     "run": "npx tsc; node build/index.js"
@@ -8,17 +10,12 @@
     "typescript": "^4.6.0-dev.20211221"
   },
   "dependencies": {
-    "@types/node-fetch": "^3.0.3",
     "@types/qs": "^6.9.7",
     "@types/request": "^2.48.7",
-    "@types/tough-cookie": "^4.0.1",
-    "axios": "^0.24.0",
-    "axios-cookiejar-support": "^2.0.3",
     "dotenv": "^10.0.0",
     "node-fetch": "^3.1.0",
     "node-html-parser": "^5.1.0",
     "qs": "^6.10.2",
-    "request": "^2.88.2",
-    "tough-cookie": "^4.0.0"
+    "request": "^2.88.2"
   }
 }

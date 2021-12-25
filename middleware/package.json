@@ -1,0 +1,24 @@
+{
+  "name": "middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "run": "npx tsc; node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "omnivox-crawler": "../crawler"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.8"
+  }
+}
