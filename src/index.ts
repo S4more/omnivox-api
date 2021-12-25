@@ -6,6 +6,7 @@ import {LeaCookie} from "./modules/lea/LeaCookie";
 import {LeaSkyCookie} from "./modules/lea/LeaSkyCookie";
 import {Lea} from "./modules/lea/Lea";
 import {MioManager} from "./managers/MioManager";
+import {LeaManager} from "./managers/LeaManager";
 
 dotenv.config();
 const cookieManager = new CookieManager();
@@ -15,29 +16,14 @@ async function login() {
     const k = await loginCookies.get();
     await new Login(cookieManager, k).get();
 }
-async function loadTokens() {
-    await login();
-    //await new MioCookie(cookieManager).get();
-}
 
-async function loadMio() {
-    await loadTokens();
-}
+login().then(() => {
+    LeaManager.
+        build(cookieManager.getCache()).
+        then(async manager => {
+            await manager.getAllClasses();
+            console.log(await manager.getClass({'name': 'Linear Algebra'}));
+            console.log(await manager.getClass({'name': 'Database'}));
+    });
+})
 
-async function loadLea() {
-    await loadTokens();
-    await new LeaCookie(cookieManager).get();
-    await new LeaSkyCookie(cookieManager).get();
-    const classes = await new Lea(cookieManager).get();
-    console.log(classes);
-}
-
-login();
-
-//login().then(async () => {
-//        const mioManager = await MioManager.build(cookieManager.getCache());
-//        const users = await mioManager.getUserList("Guilherme");
-//        const user = users.filter(user => user.Numero === "2035536");
-//        await mioManager.sendMio(user, {'title': 'This was sent by an API', 'message': 'One day of work and it finally is here.'});
-//    }
-//)
