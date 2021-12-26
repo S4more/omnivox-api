@@ -24,7 +24,7 @@ async function testLea() {
     const lm = await LeaManager.build(cm.getCache());
     const classes = await lm.getClassDocumentSummary();
     await lm.getAllClasses();
-    await lm.getClassDocumentList(classes[4].href);
+    await lm.getClassDocumentListByHref(classes[4].href);
 
 }
 
