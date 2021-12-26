@@ -1,9 +1,7 @@
 <template>
   <div class="login">
-    <section class="error" v-if="hasError">
-      <p class="errorMsg">
-        {{errorMsg}}
-      </p>
+    <section :class='error ? "error message" : "message"' v-if="message">
+      {{message}}
     </section>
     <section class="inputs">
       <span class="labelBox">
@@ -12,18 +10,19 @@
         <label>Password:</label>
         <input type="password" v-model="password">
       </span>
-      <button @click="login">Login</button>
+      <button @click="handleLogin">Login</button>
     </section>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
 
+import { Options, Vue } from 'vue-class-component';
+import { makeLoginRequest } from '../apiBindings'
 
 const data = {
-  hasError:false,
-  errorMsg:"",
+  error:false,
+  message: "",
   password: "",
   username: ""
 }
@@ -34,13 +33,23 @@ const data = {
     return data;
   },
   methods: {
-    login() {
-      // TOOD Handle login
+    async handleLogin() {
+      makeLoginRequest(this.username, this.password).then(res => {
+        res.json().then(data => {
+          if(data.name){
+            this.setMessage(data.name, true)
+          } else {
+            this.setMessage(data, false)
+          }
+        });
+      }).catch(err => {
+        this.setMessage(err.name, true);
+      })
     },
 
-    error(message:string) {
-      this.hasError = true;
-      this.errorMsg = message;
+    setMessage(message:string, error:boolean) {
+      this.error = error;
+      this.message = message;
     }
   }
 })
@@ -54,8 +63,24 @@ export default class Login extends Vue {};
   padding:3rem;
   > * {
     max-width: 400px;
+    margin:1rem;
     margin-left: auto;
     margin-right:auto;
+  }
+
+  .message {
+    background: #fff;
+    border-radius:0.5rem;
+    box-shadow: var(--b-shadow-1);
+    padding:1rem;
+    
+    border:2px solid green;
+    background-color:rgb(209, 255, 209);
+    
+    &.error {
+      border:2px solid red;
+      background-color:rgb(255, 209, 209);
+    }
   }
 
   .inputs {
