@@ -12,7 +12,7 @@ router.use(async (req, res, next) => {
 });
 
 router.get('/getAllPreview', async (req: Request, res: Response, next: NextFunction) => {
-    return res.status(200).json(await mioManager[req.session.id].loadMioPreview());
+    return res.status(200).json({data: await mioManager[req.session.id].loadMioPreview()});
 });
 
 router.get('/getByID', async (req: Request, res: Response, next: NextFunction) => {
