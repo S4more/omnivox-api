@@ -14,6 +14,44 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  --b-shadow-1: 0px 2px 2px #0002;
+  --b-shadow-2: 0px 4px 4px #0005;
+
+
+  // Global styles
+
+  button {
+    background: #00E0FF;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background-color 0.2s;
+    box-shadow: var(--b-shadow-1);
+    border: 1px solid #ddd;
+
+    &:hover {
+      box-shadow: 0px 2px 6px #0004;
+      background: #71eeff;
+      border: 2px solid black inset;
+    }
+    &:active {
+      box-shadow: 0px 0px 1px #0004;
+    }
+  }
+
+  input {
+    box-shadow: var(--b-shadow-1);
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 body {

@@ -1,14 +1,17 @@
 <template>
   <div class="login">
-    <img alt="Omni Logo" src="../assets/logo.png">
     <section class="error" v-if="hasError">
       <p class="errorMsg">
         {{errorMsg}}
       </p>
     </section>
     <section class="inputs">
-      <input type="text" v-model="username">
-      <input type="password" v-model="password">
+      <span class="labelBox">
+        <label>Username:</label>
+        <input type="text" v-model="username">
+        <label>Password:</label>
+        <input type="password" v-model="password">
+      </span>
       <button @click="login">Login</button>
     </section>
   </div>
@@ -45,3 +48,39 @@ const data = {
 export default class Login extends Vue {};
 
 </script>
+
+<style lang="scss" scoped>
+.login {
+  padding:3rem;
+  > * {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right:auto;
+  }
+
+  .inputs {
+    .labelBox {
+      display:grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 1rem;
+      label {
+        text-align: center;
+        line-height: 2rem;
+        vertical-align: middle;
+      }
+    }
+
+    > * {
+      margin: 0.5rem;
+    }
+
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding:2rem;
+    border-radius:0.5rem;
+    box-shadow: var(--b-shadow-1);
+  }
+}
+
+</style>
