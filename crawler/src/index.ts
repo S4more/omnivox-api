@@ -4,7 +4,9 @@ import * as dotenv from 'dotenv';
 import {CookieManager} from './CookieManager';
 import {MioManager} from "./managers/MioManager";
 export {LeaManager} from "./managers/LeaManager";
+import {loginUser} from "./utils/loginPromt";
 
+loginUser()
 dotenv.config();
 
 export async function login(username: string, password: string): Promise<CookieManager> {
