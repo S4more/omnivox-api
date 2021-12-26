@@ -6,7 +6,9 @@ import {CookieManager} from './CookieManager';
 import {MioManager} from "./managers/MioManager";
 import {LeaManager} from "./managers/LeaManager";
 export {LeaManager} from "./managers/LeaManager";
+import {loginUser} from "./utils/loginPromt";
 
+loginUser()
 dotenv.config();
 
 export async function login(username: string, password: string): Promise<CookieManager> {
@@ -18,7 +20,7 @@ export async function login(username: string, password: string): Promise<CookieM
 }
 
 async function testLea() {
-    const cm = await login("2035536", "86491300AsDf");
+    const cm = await login("2035536", "password");
     const lm = await LeaManager.build(cm.getCache());
     const classes = await lm.getClassDocumentSummary();
     await lm.getAllClasses();
