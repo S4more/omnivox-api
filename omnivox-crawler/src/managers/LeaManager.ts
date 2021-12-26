@@ -35,7 +35,7 @@ export class LeaManager {
         return this.classesDocumentSummary;
     }
 
-    async getClassDocumentList(href: string) {
+    async getClassDocumentListByHref(href: string) {
         return await new LeaClassDocument(this.cookieManager, href).get();
     }
 
@@ -48,7 +48,6 @@ export class LeaManager {
         await new LeaCookie(cookieManager).get();
         await new LeaSkyCookie(cookieManager).get();
         const manager = new LeaManager(cookieManager);
-        // The first page needs to be loaded...
         await manager.getAllClasses();
         return manager;
     }

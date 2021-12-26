@@ -20,14 +20,14 @@ export async function login(username: string, password: string): Promise<CookieM
 }
 
 async function testLea() {
-    const cm = await login("2035536", "password");
+    const cm = await login(process.env.user_name!, process.env.password!);
     const lm = await LeaManager.build(cm.getCache());
     const classes = await lm.getClassDocumentSummary();
     await lm.getAllClasses();
-    console.log(await lm.getClassDocumentList(classes[0].href));
+    await lm.getClassDocumentList(classes[4].href);
 
 }
 
-testLea();
+//testLea();
 
 export {MioManager};
