@@ -1,5 +1,14 @@
 # omni-client
 
+An alternative to the default omnivox website using the omnivox-crawler API.
+
+## Features:
+### Login:  
+- [ ] Login page UI
+- [ ] Cretentials stored in vuex
+- [ ] Login page functionality
+
+
 ## Project setup
 ```
 npm install
@@ -9,11 +18,8 @@ npm install
 ```
 npm run serve
 ```
-
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
