@@ -1,8 +1,5 @@
 <template>
   <div class="login">
-    <section :class='error ? "error message" : "message"' v-if="message">
-      {{message}}
-    </section>
     <section class="inputs">
       <span class="labelBox">
         <label>Username:</label>
@@ -13,6 +10,9 @@
       <button @click="handleLogin">Login</button>
       <button @click="getAllClasses">GetData</button>
     </section>
+    <section :class='error ? "error message" : "message"' v-if="message">
+      {{message}}
+    </section>
   </div>
 </template>
 
@@ -20,6 +20,7 @@
 
 import { Options, Vue } from 'vue-class-component';
 import login from '../apiBindings/login'
+import store from '../store/index'
 
 const data = {
   error:false,
@@ -33,21 +34,21 @@ const data = {
   data: function() {
     return data;
   },
+
   methods: {
-    // async getAllClasses() {
-    //   getAllClasses().then(res => res.json().then(data => console.log(data)))
-    // },
-    async handleLogin() {
+    async getAllClasses() {
+      // getAllClasses().then(res => res.json().then(data => console.log(data)))
+      console.log(store.state.authToken);
+    },
+    async handleLogin() { 
+      this.setMessage("", false);
       login(this.username, this.password).then(res => {
-        // res.json().then(data => {
-        //   if(data.name){
-        //     this.setMessage(data.name, true)
-        //   } else {
-        //     this.setMessage(data, false)
-        //   }
-        // });
-      }).catch(err => {
-        this.setMessage(err.name, true);
+        if(res){
+          store.commit('setAuthToken', res)
+          this.setMessage("Logged In!", false);
+        } else {
+          this.setMessage("Login Failed", true);
+        }
       })
     },
 

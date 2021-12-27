@@ -1,25 +1,25 @@
-import apiPath from "./basePath";
-import baseRequestPerams from "./baseRequestPerams";
-import { contentTypes } from "./baseRequestPerams";
-
-
-
 export default async function login(username:string, password:string):Promise<string> {
-	const payload = `username=${username}&password=${password}`;
 	return new Promise((res, rej) => {
-		fetch(`${apiPath}/login`, baseRequestPerams("POST", contentTypes.URLENCODED, payload)).then(response => {
-			response.json().then(data => {
-				if(typeof data == "object") {
-					rej(data.name);
-				} else {
-					let vals = response.headers.keys()
-					let val;
-					while((val = vals.next()).done == false) {
-						console.log(val);
+		fetch('http://localhost:1337', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				query: `
+				mutation Login($username:String!, $password:String!) {
+					login (
+						id: $username,
+						password: $password
+					) {
+						token
 					}
-					console.log(data);
-				}
-			})
+				}`,
+				variables: {
+					username,
+					password
+				},
+			}),
 		})
+		.then((result) => result.json())
+		.then((data) => res(data.data.login.token)).catch(err => rej(err));
 	})
 }
