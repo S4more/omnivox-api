@@ -6,6 +6,9 @@
 
 import type { Context } from "./src/context"
 
+
+
+
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
@@ -14,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  LeaClassLookupType: "CODE" | "NAME"
 }
 
 export interface NexusGenScalars {
@@ -27,6 +31,14 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   AuthPayload: { // root type
     token?: string | null; // String
+  }
+  LeaClass: { // root type
+    code: string; // String!
+    number: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
   }
   Link: { // root type
     description: string; // String!
@@ -45,11 +57,19 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string | null; // String
+  }
+  LeaClass: { // field return type
+    code: string; // String!
+    number: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
   }
   Link: { // field return type
     description: string; // String!
@@ -61,6 +81,7 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Link']; // Link!
   }
   Query: { // field return type
+    LeaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
   }
 }
@@ -68,6 +89,14 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     token: 'String'
+  }
+  LeaClass: { // field return type name
+    code: 'String'
+    number: 'Int'
+    schedule: 'String'
+    section: 'String'
+    teacher: 'String'
+    title: 'String'
   }
   Link: { // field return type name
     description: 'String'
@@ -79,6 +108,7 @@ export interface NexusGenFieldTypeNames {
     post: 'Link'
   }
   Query: { // field return type name
+    LeaClass: 'LeaClass'
     feed: 'Link'
   }
 }
@@ -94,6 +124,12 @@ export interface NexusGenArgTypes {
       url: string; // String!
     }
   }
+  Query: {
+    LeaClass: { // args
+      lookUpType: NexusGenEnums['LeaClassLookupType']; // LeaClassLookupType!
+      search: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -106,7 +142,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
