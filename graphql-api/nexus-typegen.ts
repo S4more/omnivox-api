@@ -32,6 +32,11 @@ export interface NexusGenObjects {
   AuthPayload: { // root type
     token?: string | null; // String
   }
+  CurrentGrade: { // root type
+    percentage: string; // String!
+    point: number; // Float!
+    total: number; // Float!
+  }
   LeaClass: { // root type
     code: string; // String!
     number: number; // Int!
@@ -47,6 +52,10 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  UserClass: { // root type
+    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newDocuments: number; // Int!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -62,6 +71,11 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string | null; // String
+  }
+  CurrentGrade: { // field return type
+    percentage: string; // String!
+    point: number; // Float!
+    total: number; // Float!
   }
   LeaClass: { // field return type
     code: string; // String!
@@ -84,11 +98,20 @@ export interface NexusGenFieldTypes {
     LeaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
   }
+  UserClass: { // field return type
+    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newDocuments: number; // Int!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     token: 'String'
+  }
+  CurrentGrade: { // field return type name
+    percentage: 'String'
+    point: 'Float'
+    total: 'Float'
   }
   LeaClass: { // field return type name
     code: 'String'
@@ -110,6 +133,10 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     LeaClass: 'LeaClass'
     feed: 'Link'
+  }
+  UserClass: { // field return type name
+    grade: 'CurrentGrade'
+    newDocuments: 'Int'
   }
 }
 
