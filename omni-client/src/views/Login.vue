@@ -11,6 +11,7 @@
         <input type="password" v-model="password">
       </span>
       <button @click="handleLogin">Login</button>
+      <button @click="getAllClasses">GetData</button>
     </section>
   </div>
 </template>
@@ -18,7 +19,7 @@
 <script lang="ts">
 
 import { Options, Vue } from 'vue-class-component';
-import { makeLoginRequest } from '../apiBindings'
+import login from '../apiBindings/login'
 
 const data = {
   error:false,
@@ -33,15 +34,18 @@ const data = {
     return data;
   },
   methods: {
+    // async getAllClasses() {
+    //   getAllClasses().then(res => res.json().then(data => console.log(data)))
+    // },
     async handleLogin() {
-      makeLoginRequest(this.username, this.password).then(res => {
-        res.json().then(data => {
-          if(data.name){
-            this.setMessage(data.name, true)
-          } else {
-            this.setMessage(data, false)
-          }
-        });
+      login(this.username, this.password).then(res => {
+        // res.json().then(data => {
+        //   if(data.name){
+        //     this.setMessage(data.name, true)
+        //   } else {
+        //     this.setMessage(data, false)
+        //   }
+        // });
       }).catch(err => {
         this.setMessage(err.name, true);
       })

@@ -1,10 +1,12 @@
 <template>
-  <div id="nav">
-    <router-link class="home" to="/"><img class="homeIcon" src="./assets/logo.svg"></router-link>
-    <router-link to="/about">About</router-link>
-    <router-link to="/login">Login</router-link>
+  <div>
+    <div id="nav">
+      <router-link class="home" to="/"><img class="homeIcon" src="./assets/logo.svg"></router-link>
+      <router-link to="/about">About</router-link>
+      <router-link to="/login">Login</router-link>
+    </div>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
