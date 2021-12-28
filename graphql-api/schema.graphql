@@ -38,8 +38,8 @@ type Mutation {
 }
 
 type Query {
-  LeaClass(lookUpType: LeaClassLookupType!, search: String!): LeaClass!
   feed: [Link!]!
+  leaClass(lookUpType: LeaClassLookupType!, search: String!): LeaClass!
 }
 
 type UserClass {
