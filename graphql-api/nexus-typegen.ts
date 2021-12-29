@@ -6,6 +6,9 @@
 
 import type { Context } from "./src/context"
 
+
+
+
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
@@ -14,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  LeaClassLookupType: "CODE" | "NAME"
 }
 
 export interface NexusGenScalars {
@@ -28,6 +32,19 @@ export interface NexusGenObjects {
   AuthPayload: { // root type
     token?: string | null; // String
   }
+  CurrentGrade: { // root type
+    percentage: string; // String!
+    point: number; // Float!
+    total: number; // Float!
+  }
+  LeaClass: { // root type
+    code: string; // String!
+    number: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
+  }
   Link: { // root type
     description: string; // String!
     id: number; // Int!
@@ -35,6 +52,10 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  UserClass: { // root type
+    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newDocuments: number; // Int!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -45,11 +66,24 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string | null; // String
+  }
+  CurrentGrade: { // field return type
+    percentage: string; // String!
+    point: number; // Float!
+    total: number; // Float!
+  }
+  LeaClass: { // field return type
+    code: string; // String!
+    number: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
   }
   Link: { // field return type
     description: string; // String!
@@ -62,12 +96,30 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
+    leaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
+  }
+  UserClass: { // field return type
+    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newDocuments: number; // Int!
   }
 }
 
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     token: 'String'
+  }
+  CurrentGrade: { // field return type name
+    percentage: 'String'
+    point: 'Float'
+    total: 'Float'
+  }
+  LeaClass: { // field return type name
+    code: 'String'
+    number: 'Int'
+    schedule: 'String'
+    section: 'String'
+    teacher: 'String'
+    title: 'String'
   }
   Link: { // field return type name
     description: 'String'
@@ -80,6 +132,11 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     feed: 'Link'
+    leaClass: 'LeaClass'
+  }
+  UserClass: { // field return type name
+    grade: 'CurrentGrade'
+    newDocuments: 'Int'
   }
 }
 
@@ -94,6 +151,12 @@ export interface NexusGenArgTypes {
       url: string; // String!
     }
   }
+  Query: {
+    leaClass: { // args
+      lookUpType: NexusGenEnums['LeaClassLookupType']; // LeaClassLookupType!
+      search: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -106,7 +169,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

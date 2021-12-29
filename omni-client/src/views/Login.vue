@@ -26,6 +26,7 @@
 import { Options, Vue } from 'vue-class-component';
 import login from '../apiBindings/login'
 import store from '../store/index'
+import getLeaClass from '../apiBindings/getLeaClass'
 
 const data = {
   error:false,
@@ -43,8 +44,7 @@ const data = {
 
   methods: {
     async getAllClasses() {
-      // getAllClasses().then(res => res.json().then(data => console.log(data)))
-      console.log(store.state.authToken);
+      getLeaClass().then(data => this.setMessage(JSON.stringify(data)));
     },
 
     async handleLogin() { 

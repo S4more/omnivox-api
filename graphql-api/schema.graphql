@@ -6,6 +6,26 @@ type AuthPayload {
   token: String
 }
 
+type CurrentGrade {
+  percentage: String!
+  point: Float!
+  total: Float!
+}
+
+type LeaClass {
+  code: String!
+  number: Int!
+  schedule: [String!]!
+  section: String!
+  teacher: String!
+  title: String!
+}
+
+enum LeaClassLookupType {
+  CODE
+  NAME
+}
+
 type Link {
   description: String!
   id: Int!
@@ -19,4 +39,10 @@ type Mutation {
 
 type Query {
   feed: [Link!]!
+  leaClass(lookUpType: LeaClassLookupType!, search: String!): LeaClass!
+}
+
+type UserClass {
+  grade: CurrentGrade!
+  newDocuments: Int!
 }

@@ -25,7 +25,7 @@ const guardedSchema = applyMiddleware(schema, permissions);
 
 export const server = new ApolloServer({
     schema: guardedSchema,
-    context
+    context: context
 });
 const port = 1337;
 
