@@ -24,7 +24,7 @@ export const AuthMutation = extendType({
                 } catch (error) {
                     return {}
                 }
-                const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "5m"});
+                const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "60m"});
                 return {
                     token
                 }

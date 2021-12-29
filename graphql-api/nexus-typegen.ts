@@ -39,11 +39,8 @@ export interface NexusGenObjects {
   }
   LeaClass: { // root type
     code: string; // String!
-    number: number; // Int!
-    schedule: string[]; // [String!]!
-    section: string; // String!
-    teacher: string; // String!
-    title: string; // String!
+    sharedInfo: NexusGenRootTypes['SharedClassInfo']; // SharedClassInfo!
+    userInfo: NexusGenRootTypes['UserClass']; // UserClass!
   }
   Link: { // root type
     description: string; // String!
@@ -52,8 +49,19 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  SharedClassInfo: { // root type
+    average: number; // Int!
+    distributedAssignments: number; // Int!
+    distributedDocuments: number; // Int!
+    median: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
+  }
   UserClass: { // root type
     grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newAssignments: number; // Int!
     newDocuments: number; // Int!
   }
 }
@@ -79,11 +87,8 @@ export interface NexusGenFieldTypes {
   }
   LeaClass: { // field return type
     code: string; // String!
-    number: number; // Int!
-    schedule: string[]; // [String!]!
-    section: string; // String!
-    teacher: string; // String!
-    title: string; // String!
+    sharedInfo: NexusGenRootTypes['SharedClassInfo']; // SharedClassInfo!
+    userInfo: NexusGenRootTypes['UserClass']; // UserClass!
   }
   Link: { // field return type
     description: string; // String!
@@ -98,8 +103,19 @@ export interface NexusGenFieldTypes {
     LeaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
   }
+  SharedClassInfo: { // field return type
+    average: number; // Int!
+    distributedAssignments: number; // Int!
+    distributedDocuments: number; // Int!
+    median: number; // Int!
+    schedule: string[]; // [String!]!
+    section: string; // String!
+    teacher: string; // String!
+    title: string; // String!
+  }
   UserClass: { // field return type
     grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
+    newAssignments: number; // Int!
     newDocuments: number; // Int!
   }
 }
@@ -115,11 +131,8 @@ export interface NexusGenFieldTypeNames {
   }
   LeaClass: { // field return type name
     code: 'String'
-    number: 'Int'
-    schedule: 'String'
-    section: 'String'
-    teacher: 'String'
-    title: 'String'
+    sharedInfo: 'SharedClassInfo'
+    userInfo: 'UserClass'
   }
   Link: { // field return type name
     description: 'String'
@@ -134,8 +147,19 @@ export interface NexusGenFieldTypeNames {
     LeaClass: 'LeaClass'
     feed: 'Link'
   }
+  SharedClassInfo: { // field return type name
+    average: 'Int'
+    distributedAssignments: 'Int'
+    distributedDocuments: 'Int'
+    median: 'Int'
+    schedule: 'String'
+    section: 'String'
+    teacher: 'String'
+    title: 'String'
+  }
   UserClass: { // field return type name
     grade: 'CurrentGrade'
+    newAssignments: 'Int'
     newDocuments: 'Int'
   }
 }

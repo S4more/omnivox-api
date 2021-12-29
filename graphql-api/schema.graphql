@@ -14,11 +14,8 @@ type CurrentGrade {
 
 type LeaClass {
   code: String!
-  number: Int!
-  schedule: [String!]!
-  section: String!
-  teacher: String!
-  title: String!
+  sharedInfo: SharedClassInfo!
+  userInfo: UserClass!
 }
 
 enum LeaClassLookupType {
@@ -42,7 +39,19 @@ type Query {
   feed: [Link!]!
 }
 
+type SharedClassInfo {
+  average: Int!
+  distributedAssignments: Int!
+  distributedDocuments: Int!
+  median: Int!
+  schedule: [String!]!
+  section: String!
+  teacher: String!
+  title: String!
+}
+
 type UserClass {
   grade: CurrentGrade!
+  newAssignments: Int!
   newDocuments: Int!
 }

@@ -4,12 +4,9 @@ import { NexusGenObjects } from "../../nexus-typegen";
 export const LeaClass = objectType({
     name: "LeaClass",
     definition(t) {
-        t.nonNull.string("title");
-        t.nonNull.string("teacher");
-        t.nonNull.string("section");
         t.nonNull.string("code");
-        t.nonNull.list.nonNull.string("schedule");
-        t.nonNull.int("number");
+        t.nonNull.field("sharedInfo", {type: 'SharedClassInfo'});
+        t.nonNull.field("userInfo", {type: 'UserClass'})
     }
 });
 
@@ -22,20 +19,32 @@ export const LeaClassQuery = extendType({
                 search: nonNull(stringArg()),
                 lookUpType: nonNull("LeaClassLookupType")
             },
-            resolve: (_, {search, lookUpType}, __)  => {
-                return linkExample;
+            resolve: (_, {search, lookUpType}, ctx)  => {
+                return ctx.leaCache.getClass(ctx.id!, search);
             }
         });
     }
 });
 
 let linkExample: NexusGenObjects["LeaClass"] = {
-    title: 'Example class',
-    number: 1,
-    schedule: ['11:30 a.m', '11:40 a.m'],
-    section: '0001',
-    code: '230-ABX-DW',
-    teacher: 'Nas',
+    code: 'ABC-123-DX',
+    'sharedInfo': {
+        code: 'ABC-123-DX',
+        title: 'Example class',
+        median: 80,
+        average: 75,
+        section: '1',
+        teacher: 'Noah Labrecque',
+        schedule: ['12:00', '13:00'],
+        distributedDocuments: 12,
+        distributedAssignments: 20
+    },
+    userInfo: {
+        code: 'ABC-123-DX',
+        grade: {point: 80, total: 100, percentage: '80%'},
+        newDocuments: 1,
+        newAssignments: 1
+    }
 }
 
 export const LeaClassLookUpType = enumType({

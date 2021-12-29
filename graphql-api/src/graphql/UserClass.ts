@@ -5,6 +5,7 @@ export const UserClass = objectType({
     name: "UserClass",
     definition(t) {
         t.nonNull.int("newDocuments");
+        t.nonNull.int("newAssignments");
         t.nonNull.field("grade" , {
             type: 'CurrentGrade',
         });

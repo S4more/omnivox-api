@@ -1,13 +1,13 @@
 import { decodeAuthHeader } from "./utils/auth";
-//import { LeaCache } from "./cache/LeaCache";
+import { LeaCacheManager } from "./cache/LeaCache";
 import { Request } from "express";
 
 export interface Context {
     id?: string;
-    //leaCache?: {;
+    leaCache: LeaCacheManager;
 }
 
-//const leaCache = new LeaCache();
+const leaCache = new LeaCacheManager();
 
 export const context = ({req}: {req: Request}): Context => {
     const token =
@@ -15,5 +15,5 @@ export const context = ({req}: {req: Request}): Context => {
             ? decodeAuthHeader(req.headers.authorization)
             : null;
 
-    return {id: token?.id};
+    return {id: token?.id, leaCache};
 }

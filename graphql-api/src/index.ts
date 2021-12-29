@@ -4,7 +4,7 @@ import { schema } from "./schema";
 import { shield, rule, allow } from 'graphql-shield';
 import { context } from "./context";
 
-const isLogged = rule()(async (parent, args, ctx, info) => {
+const isLogged = rule()(async (_, __, ctx, ___) => {
     return (ctx.id != null)
 });
 
