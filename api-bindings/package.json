@@ -1,0 +1,16 @@
+{
+  "name": "api-bindings",
+  "version": "1.0.0",
+  "description": "Bindings for the omnivox graphql-api",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+
+  "devDependencies": {
+    "source-map-support": "^0.5.21",
+    "typescript": "^4.6.0-dev.20211221"
+  }
+}

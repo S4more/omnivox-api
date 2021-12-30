@@ -13,7 +13,7 @@ export const LeaClass = objectType({
 export const LeaClassQuery = extendType({
     type: "Query",
     definition(t) {
-        t.nonNull.field("LeaClass", {
+        t.nonNull.field("leaClass", {
             "type": "LeaClass",
             args: {
                 search: nonNull(stringArg()),

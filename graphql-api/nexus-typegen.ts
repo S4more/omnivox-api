@@ -100,8 +100,8 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Link']; // Link!
   }
   Query: { // field return type
-    LeaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
+    leaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
   }
   SharedClassInfo: { // field return type
     average: number; // Int!
@@ -144,8 +144,8 @@ export interface NexusGenFieldTypeNames {
     post: 'Link'
   }
   Query: { // field return type name
-    LeaClass: 'LeaClass'
     feed: 'Link'
+    leaClass: 'LeaClass'
   }
   SharedClassInfo: { // field return type name
     average: 'Int'
@@ -176,7 +176,7 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    LeaClass: { // args
+    leaClass: { // args
       lookUpType: NexusGenEnums['LeaClassLookupType']; // LeaClassLookupType!
       search: string; // String!
     }
