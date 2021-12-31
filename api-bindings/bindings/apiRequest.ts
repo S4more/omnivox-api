@@ -2,7 +2,7 @@ import URL from "../url";
 
 const headers = {'Content-Type': 'application/json'}
 
-export default class APIRequest<VarsType, ReturnType>{
+export default class APIRequest<VarsType, ReturnType> {
 	constructor(private querry:string, private method:"POST" | "GET") {};
 	execute(vars:VarsType):Promise<ReturnType> {
 		return new Promise((res, rej) => {
@@ -15,7 +15,11 @@ export default class APIRequest<VarsType, ReturnType>{
 				})
 			})
 			.then(result => result.json())
-			.then(data => res(data.data))
+			.then(data => {
+				for(let i in data.data){
+					res(data.data[i]);
+				}
+			})
 			.catch(err => rej(err));
 		})
 	}

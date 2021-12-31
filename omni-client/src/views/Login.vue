@@ -24,7 +24,7 @@
 <script lang="ts">
 
 import { Options, Vue } from 'vue-class-component';
-import login from '../apiBindings/login'
+import login from '../../../api-bindings/bindings/login'
 import store from '../store/index'
 import getLeaClass from '../apiBindings/getLeaClass'
 
@@ -50,9 +50,10 @@ const data = {
     async handleLogin() { 
       this.setMessage("", false);
       this.loading = true;
-      login(this.username, this.password).then(res => {
+
+      login.execute({id:this.username, password:this.password}).then(res => {
         if(res){
-          store.commit('setAuthToken', res)
+          store.commit('setAuthToken', res.token)
           this.setMessage("Logged In!", false);
         } else {
           this.setMessage("Login Failed", true);
