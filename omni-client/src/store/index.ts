@@ -11,7 +11,7 @@ if(!storedToken) storedToken = {expires:0, value:""};
 export default createStore({
   state: {
     authToken: storedToken as AuthToken,
-    loggedIn:!!storedToken,
+    loggedIn:!!storedToken.value,
   },
 
   mutations: {
