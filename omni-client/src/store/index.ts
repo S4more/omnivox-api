@@ -5,20 +5,23 @@ interface AuthToken {
   value:string
 }
 
-let storedToken = JSON.parse(localStorage.getItem("authToken") || "{}");
+let storedToken = JSON.parse(sessionStorage.getItem("authToken") || "{}");
 if(!storedToken) storedToken = {expires:0, value:""};
 
 export default createStore({
   state: {
-    authToken: {expires:0, value:""} as AuthToken
+    authToken: storedToken as AuthToken,
+    loggedIn:!!storedToken,
   },
+
   mutations: {
     setAuthToken (state, token:string) {
       state.authToken.value = token;
       state.authToken.expires = Date.now();
-      localStorage.setItem("authToken", JSON.stringify(state.authToken));
+      sessionStorage.setItem("authToken", JSON.stringify(state.authToken));
     }
   },
+
   getters: {
     getAuthToken: state => {
       return (state.authToken.expires < Date.now()) ? state.authToken.value : "";
