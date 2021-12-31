@@ -26,7 +26,6 @@
 import { Options, Vue } from 'vue-class-component';
 import login from '../../../api-bindings/bindings/login'
 import store from '../store/index'
-import getLeaClass from '../apiBindings/getLeaClass'
 
 const data = {
   error:false,
@@ -44,7 +43,7 @@ const data = {
 
   methods: {
     async getAllClasses() {
-      getLeaClass().then(data => this.setMessage(JSON.stringify(data)));
+      this.setMessage("not yet implemented")
     },
 
     async handleLogin() { 
