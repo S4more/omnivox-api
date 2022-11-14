@@ -1,36 +1,28 @@
 import parse from "node-html-parser";
-import request from "request";
-import {OmnivoxModule, Params} from "../OmnivoxModule";
+import {Requester} from "../OmnivoxModule";
 export interface ClassDocumentSumary {
-    name: string,
-    availableDocuments: string,
-    href: string,
+  name: string,
+  availableDocuments: string,
+  href: string,
 }
 
-export class LeaDocumentSummary extends OmnivoxModule<ClassDocumentSumary[]> {
-    protected parse(response: request.Response) {
-        const classes: ClassDocumentSumary[] = [];
-        const root = parse(response.body);
-        const rows = root.querySelectorAll(".itemDataGrid, .itemDataGridAltern");
-        rows.forEach(tr => {
-            const a = tr.querySelector("a");
-            let c: ClassDocumentSumary = {
-                name: a!.innerText.trim(),
-                href: a!.getAttribute("href")!,
-                availableDocuments: tr.querySelectorAll("td")[2].innerText.trim()
-            };
+const url = "https://www-daw-ovx.omnivox.ca/cvir/ddle/SommaireDocuments.aspx";
+export default async function getLeaDocumentSummary() {
+  const request = await Requester.makeGetRequest({ url });
 
-            classes.push(c);
-        });
+  const classes: ClassDocumentSumary[] = [];
+  const root = parse(request.data);
+  const rows = root.querySelectorAll(".itemDataGrid, .itemDataGridAltern");
+  rows.forEach(tr => {
+    const a = tr.querySelector("a");
+    let c: ClassDocumentSumary = {
+      name: a!.innerText.trim(),
+      href: a!.getAttribute("href")!,
+      availableDocuments: tr.querySelectorAll("td")[2].innerText.trim()
+    };
 
-        return classes;
-    }
+    classes.push(c);
+  });
 
-    protected getParams(cookie: string): Params {
-        return {
-            url: 'https://www-daw-ovx.omnivox.ca/cvir/ddle/SommaireDocuments.aspx',
-            method: 'GET',
-            cookie
-        }
-    }
+  return classes;
 }

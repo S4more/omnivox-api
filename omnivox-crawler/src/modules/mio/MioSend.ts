@@ -1,33 +1,15 @@
-import request from "request";
-import {OmnivoxModule, Params} from "../OmnivoxModule";
-import { CookieManager } from "../../CookieManager";
+import {Requester} from "../OmnivoxModule";
 import {MioPostParam} from "./MioGetCompose";
 
 export interface MioSendData {
-    title: string;
-    message: string;
+  title: string;
+  message: string;
 }
 
-export class MioSend extends OmnivoxModule<void> {
-    private readonly url = 'https://dawsoncollege-estd.omnivox.ca/WebApplication/Module.MIOE/Commun/Composer/NouveauMessage2.aspx?C=DAW&E=P&L=ANG';
+const url = 'https://dawsoncollege-estd.omnivox.ca/WebApplication/Module.MIOE/Commun/Composer/NouveauMessage2.aspx?C=DAW&E=P&L=ANG';
+export default async function sendMio(form: MioPostParam, data: MioSendData) {
+    form.ctl00$cntFormulaire$txtSujet = data.title;
+    form.ctl00$cntFormulaire$ftbMioNouveau = data.message;
 
-    constructor(cookie: CookieManager, private form: MioPostParam, data: MioSendData) {
-        super(cookie);
-
-        form.ctl00$cntFormulaire$txtSujet = data.title;
-        form.ctl00$cntFormulaire$ftbMioNouveau = data.message;
-    }
-
-    protected getParams(cookie: string): Params {
-        return {
-            url: this.url,
-            method: 'POST',
-            cookie,
-            form: this.form,
-        }
-    }
-
-    protected parse(body: request.Response): void {
-        //return body.headers["set-cookie"] || [];
-    }
+    await Requester.makePostRequest({ url: url, body: form }, true);
 }

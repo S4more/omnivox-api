@@ -1,65 +1,33 @@
-import request, {CoreOptions, UrlOptions} from "request";
-import {IStringifyOptions} from "qs";
-import {CookieManager} from "../CookieManager";
-export interface Params {
-    method: 'POST' | 'GET';
-    url: string;
-    cookie?: string;
-    form?: any;
-    followRedirect?: boolean,
-    json?: boolean,
-    qsStringifyOptions?: IStringifyOptions; 
+import axios  from "axios";
+import { wrapper } from 'axios-cookiejar-support';
+import { CookieJar } from 'tough-cookie';
+
+export type GetRequestParams = {
+  url: string;
+  query?: string;
 }
 
-export abstract class OmnivoxModule<T> {
-    protected abstract parse(request: request.Response): T;
-    protected abstract getParams(cookie: string): Params;
+export type PostRequestParams = {
+  url: string;
+  body: unknown;
+}
 
-    protected makeRequest(cookie: string): request.Request {
-        const options = this.generateOptions(this.getParams(cookie));
-        // The request needs to be bind to a callback to work. For some reason...
-        const c = request(options, (_, __) => {}); 
-        return c;
-    }
+const jar = new CookieJar();
+const client = wrapper(axios.create({ jar, withCredentials: true }));
 
-    constructor(protected cookieManager: CookieManager) {
-    }
+export class Requester {
+  static async makeGetRequest(params: GetRequestParams) {
+    const response = await client.get(params.url);
+    return response;
+  }
 
-    async get(): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
-            this.makeRequest(this.cookieManager.getCacheString())
-                .once('complete', r => {
-                    this.cookieManager.addCookies(r.headers["set-cookie"] || []);
-                    try {
-                        resolve(this.parse(r));
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-        });
-    }
-
-    protected generateOptions(options: Params) {
-        let headers = {
-            cookie: options.cookie,
-            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
-          };
-          let config: CoreOptions & UrlOptions = {
-              method: options.method,
-              url: options.url,
-              headers,
-              followRedirect: options.followRedirect,
-              json: options.json,
-              qsStringifyOptions: options.qsStringifyOptions,
-              qsParseOptions: options.qsStringifyOptions
-              }
-
-          if (options.json) {
-              config['json'] = options.form;
-          } else {
-              config['form'] = options.form;
-          }
-
-          return config;
+  static async makePostRequest(params: PostRequestParams, isJson = false) {
+    const response = await client.post(params.url, params.body, {
+      headers: {
+        'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+        'Content-Type': isJson ? "application/json" : "application/x-www-form-urlencoded"
       }
+    });
+    return response;
+  }
 }
