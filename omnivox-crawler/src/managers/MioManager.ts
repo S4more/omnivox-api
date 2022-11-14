@@ -1,13 +1,13 @@
-import {MioLoadPreviewList} from "../modules/Mio";
-import {AddUserAsRecipient} from "../modules/mio/MioAddUserAsRecipient";
-import {MioGetCompose} from "../modules/mio/MioGetCompose";
-import {MioGetSearchPanel} from "../modules/mio/MioGetSearchPanel";
-import {MioGetSearchPanelCookie} from "../modules/mio/MioGetSearchPanelCookie";
-import {MioSaveRecipient} from "../modules/mio/MioSaveRecipient";
-import {MioSearchUser} from "../modules/mio/MioSearchUser";
-import {MioSend, MioSendData} from "../modules/mio/MioSend";
-import {MioCookie} from "../modules/MioCookie";
-import {MioDetail} from "../modules/MioDetail";
+import getMioPreviewList from "../modules/Mio";
+import addUserAsRecipient from "../modules/mio/MioAddUserAsRecipient";
+import getMioCompose from "../modules/mio/MioGetCompose";
+import getMioSearchPanel from "../modules/mio/MioGetSearchPanel";
+import getMioSearchPanelCookie from "../modules/mio/MioGetSearchPanelCookie";
+import saveMioRecipient from "../modules/mio/MioSaveRecipient";
+import searchMioUser from "../modules/mio/MioSearchUser";
+import sendMioApi, { MioSendData } from "../modules/mio/MioSend";
+import getMioCookies from "../modules/MioCookie";
+import getMioDetail from "../modules/MioDetail";
 import {Mio} from "../types/mio/Mio";
 import {MioPreview} from "../types/mio/MioPreview";
 import {SearchUser} from "../types/SearchUser";
@@ -19,7 +19,7 @@ export class MioManager {
   private cacheSize = 1000; 
 
   public async loadMioPreview(): Promise<MioPreview[]> {
-    return await new MioLoadPreviewList().getList();
+    return await getMioPreviewList();
   }
 
   public async loadMioById(id: string): Promise<Mio> {
@@ -28,7 +28,7 @@ export class MioManager {
         const mio: Mio | undefined = this.cachedMios.find(mio => mio.id === id);
         if (mio) return mio;
       }
-      const mio = await new MioDetail(id).getDetail();
+      const mio = await getMioDetail(id);
       this.cachedMios.push(mio);
       return mio;
     } catch (error) {
@@ -37,10 +37,7 @@ export class MioManager {
   }
 
   public async getUserList(name: string): Promise<SearchUser[]> {
-    const users: SearchUser[] = await new MioSearchUser().searchUser({
-      'name': name, 
-      'idRechercheIndividu': this.searchRechercheIndividu
-    });
+    const users: SearchUser[] = await searchMioUser({ 'name': name, 'idRechercheIndividu': this.searchRechercheIndividu });
 
     users.forEach(u => {
       this.cacheUser(u);
@@ -50,12 +47,12 @@ export class MioManager {
   }
 
   public async sendMio(users: SearchUser[], data: MioSendData) {
-    const param = await new MioGetCompose().getCompose();
+    const param = await getMioCompose()
     const token = await MioManager.getIdRechercheIndividu();
     param.ctl00$cntFormulaire$hidIdRechercheIndividu=token.toString();
-    users.forEach(async user => await new AddUserAsRecipient(user, token).run());
-    await new MioSaveRecipient(token).run();
-    await new MioSend(param, data).run();
+    users.forEach(async user => await addUserAsRecipient(user, token));
+    await saveMioRecipient(token);
+    await sendMioApi(param, data);
   }
 
   public getCachedUserByID(studentID: string) {
@@ -84,24 +81,19 @@ single time.
 * cookie manager.
 */
   static async build(): Promise<MioManager> {
-    await new MioCookie().run();
+    await getMioCookies();
     const param = await this.getIdRechercheIndividu();
     return new MioManager(param);
   }
 
   private static async getIdRechercheIndividu(): Promise<number> {
-    const param = await new MioGetCompose().getCompose();
-    await new MioLoadPreviewList().getList();
-    await new MioGetSearchPanelCookie({
+    const param = await getMioCompose();
+    await getMioSearchPanelCookie({
       AnSession: '2022',
       OidCreateur: param.ctl00$cntFormulaire$hidAjout
-    }).run();
+    });
 
-    const token = await new MioGetSearchPanel(
-      { 
-        AnSession: '2022',
-        OidCreateur: param.ctl00$cntFormulaire$hidAjout 
-      }).getSearchParameters();
+    const token = await getMioSearchPanel( { AnSession: '2022', OidCreateur: param.ctl00$cntFormulaire$hidAjout });
 
     return token;
   }

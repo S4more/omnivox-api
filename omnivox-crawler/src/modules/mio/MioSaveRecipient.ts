@@ -1,19 +1,11 @@
-import {OmnivoxModule } from "../OmnivoxModule";
+import { Requester } from "../OmnivoxModule";
 
-export class MioSaveRecipient extends OmnivoxModule<void> {
-  readonly url = 'https://dawsoncollege.omnivox.ca/WebApplication/Commun.SelectionIndividu/Prive/SelectionIndividu.asmx/Sauvegarder';
-
-  constructor( private token: number ) {
-    super();
-  }
-
-  public async run() {
-    await this.makePostRequest({
-      url: this.url,
-      body: {
-        "idRechercheIndividu": this.token,
-        "idRechercheIndividuParent": this.token,
-      },
-    }, true);
-  }
+const url = 'https://dawsoncollege.omnivox.ca/WebApplication/Commun.SelectionIndividu/Prive/SelectionIndividu.asmx/Sauvegarder';
+export default async function saveMioRecipient(token: number) {
+  await Requester.makePostRequest({ url,
+    body: {
+      "idRechercheIndividu": token,
+      "idRechercheIndividuParent": token,
+    },
+  }, true);
 }

@@ -1,36 +1,28 @@
 import parse from "node-html-parser";
-import {OmnivoxModule, Params} from "../OmnivoxModule";
+import {Requester} from "../OmnivoxModule";
 export interface ClassDocumentSumary {
-    name: string,
-    availableDocuments: string,
-    href: string,
+  name: string,
+  availableDocuments: string,
+  href: string,
 }
 
-export class LeaDocumentSummary extends OmnivoxModule<ClassDocumentSumary[]> {
-  public async getSummaries(): Promise<ClassDocumentSumary[]> {
-    const request = await this.makeGetRequest({
-      url: 'https://www-daw-ovx.omnivox.ca/cvir/ddle/SommaireDocuments.aspx',
-    });
+const url = "https://www-daw-ovx.omnivox.ca/cvir/ddle/SommaireDocuments.aspx";
+export default async function getLeaDocumentSummary() {
+  const request = await Requester.makeGetRequest({ url });
 
-    return this.parse(request.data);
+  const classes: ClassDocumentSumary[] = [];
+  const root = parse(request.data);
+  const rows = root.querySelectorAll(".itemDataGrid, .itemDataGridAltern");
+  rows.forEach(tr => {
+    const a = tr.querySelector("a");
+    let c: ClassDocumentSumary = {
+      name: a!.innerText.trim(),
+      href: a!.getAttribute("href")!,
+      availableDocuments: tr.querySelectorAll("td")[2].innerText.trim()
+    };
 
-  }
+    classes.push(c);
+  });
 
-  private parse(response: string) {
-      const classes: ClassDocumentSumary[] = [];
-      const root = parse(response);
-      const rows = root.querySelectorAll(".itemDataGrid, .itemDataGridAltern");
-      rows.forEach(tr => {
-          const a = tr.querySelector("a");
-          let c: ClassDocumentSumary = {
-              name: a!.innerText.trim(),
-              href: a!.getAttribute("href")!,
-              availableDocuments: tr.querySelectorAll("td")[2].innerText.trim()
-          };
-
-          classes.push(c);
-      });
-
-      return classes;
-  }
+  return classes;
 }

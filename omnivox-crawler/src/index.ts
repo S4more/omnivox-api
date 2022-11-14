@@ -1,4 +1,4 @@
-import {Login} from "./modules/Login";
+import Login from "./modules/Login";
 import * as dotenv from 'dotenv';
 import {MioManager} from "./managers/MioManager";
 export {LeaManager} from "./managers/LeaManager";
@@ -9,7 +9,7 @@ loginUser()
 dotenv.config();
 
 export async function login(username: string, password: string): Promise<boolean> {
-  return await new Login(username, password).login();
+  return await Login(username, password);
 }
 
 async function testLea() {
