@@ -26,10 +26,5 @@ async function testMio() {
   console.log(await mio.loadMioPreview());
 }
 
-login("2035536", "86491300AsDf").then(async success => {
-  console.log(`is logged in: ${success}`);
-  await testMio();
-  await testLea();
-});
 // testLea().then(v => console.log(v));
 export {MioManager};
