@@ -1,38 +1,33 @@
-import request from "request";
-import {OmnivoxModule, Params} from "../OmnivoxModule";
-import { CookieManager } from "../../CookieManager";
+import {OmnivoxModule} from "../OmnivoxModule";
 import {SearchUser, SearchUserWrapper} from "../../types/SearchUser";
 
 export interface SearchUserParam {
-    'idRechercheIndividu': number,
-    name: string,
+  'idRechercheIndividu': number,
+  name: string,
 }
 
 export class MioSearchUser extends OmnivoxModule<SearchUser[]> {
-    private readonly url = 'https://dawsoncollege.omnivox.ca/WebApplication/Commun.SelectionIndividu/Prive/SelectionIndividu.asmx/LancerRecherche';
-    private form = {};
+  private readonly url = 'https://dawsoncollege.omnivox.ca/WebApplication/Commun.SelectionIndividu/Prive/SelectionIndividu.asmx/LancerRecherche';
+  private form = {};
 
-    constructor(cookie: CookieManager, searchUserParam: SearchUserParam) {
-        super(cookie);
-        this.form = {
-            idRechercheIndividu: searchUserParam.idRechercheIndividu,
-            motCleRecherche: searchUserParam['name'],
-            toujoursAfficherDescription: false
-        };
-    }
+  constructor() {
+    super();
+  }
 
-    protected getParams(cookie: string): Params {
-        return {
-            url: this.url,
-            method: 'POST',
-            cookie,
-            json: true,
-            form: this.form,
-        }
-    }
+  public async searchUser(searchUserParam: SearchUserParam) {
+    this.form = {
+      idRechercheIndividu: searchUserParam.idRechercheIndividu,
+      motCleRecherche: searchUserParam['name'],
+      toujoursAfficherDescription: false
+    };
 
-    protected parse(response: request.Response): SearchUser[] {
-        const searchResult: SearchUser[] = (response.body as SearchUserWrapper).d.ItemsSelectionnes;
-        return searchResult; 
-    }
+    const result = await this.makePostRequest({ url: this.url, body: this.form, }, true);
+    return this.parse(result.data);
+
+  }
+
+  protected parse(body: SearchUserWrapper): SearchUser[] {
+    const searchResult: SearchUser[] = body.d.ItemsSelectionnes;
+    return searchResult; 
+  }
 }

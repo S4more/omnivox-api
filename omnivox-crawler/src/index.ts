@@ -19,14 +19,16 @@ async function testLea() {
   classes.forEach(cl => {
     console.log(cl.name);
   })
+}
 
-  // console.log(await lm.getAllClasses());
-  // console.log(await lm.getClassDocumentListByHref(classes[4].href));
-
+async function testMio() {
+  const mio = await MioManager.build();
+  console.log(await mio.loadMioPreview());
 }
 
 login("2035536", "86491300AsDf").then(async success => {
   console.log(`is logged in: ${success}`);
+  await testMio();
   await testLea();
 });
 // testLea().then(v => console.log(v));

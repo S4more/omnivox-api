@@ -35,11 +35,11 @@ export abstract class OmnivoxModule<T> {
     return response;
   }
 
-  async makePostRequest(params: PostRequestParams) {
+  async makePostRequest(params: PostRequestParams, isJson = false) {
     const response = await client.post(params.url, params.body, {
       headers: {
         'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
-        'Content-Type': "application/x-www-form-urlencoded"
+        'Content-Type': isJson ? "application/json" : "application/x-www-form-urlencoded"
       }
     });
     return response;
