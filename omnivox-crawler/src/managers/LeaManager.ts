@@ -1,16 +1,12 @@
-import {CookieManager} from "../CookieManager";
 import {LeaCookie} from "../modules/lea/LeaCookie";
-import {LeaSkyCookie} from "../modules/lea/LeaSkyCookie";
 import {Lea} from "../modules/lea/Lea";
 import {LeaClass} from "../types/LeaClass";
 import {ClassDocumentSumary, LeaDocumentSummary} from "../modules/lea/LeaDocumentSummary";
-import {Category, LeaClassDocument} from "../modules/lea/LeaClassDocuments";
+import {LeaClassDocument} from "../modules/lea/LeaClassDocuments";
 
 export class LeaManager {
     private classesCache: LeaClass[] = [];
     private classesDocumentSummary: ClassDocumentSumary[] = [];
-
-    private constructor(private cookieManager: CookieManager) {}
 
     async getClass(param: {teacher?: string, name?: string, code?: string}): Promise<LeaClass | undefined> {
         if (!this.isCacheLoaded()) await this.getAllClasses();
@@ -22,7 +18,7 @@ export class LeaManager {
 
     async getAllClasses() {
         if (!this.isCacheLoaded()) {
-            const classes = await new Lea(this.cookieManager).get();
+            const classes = await new Lea().getClasses();
             this.classesCache = classes;
         }
         return this.classesCache;
@@ -30,24 +26,23 @@ export class LeaManager {
     
     async getClassDocumentSummary() {
         if (this.classesDocumentSummary.length == 0) {
-            this.classesDocumentSummary = await new LeaDocumentSummary(this.cookieManager).get();
+            this.classesDocumentSummary = await new LeaDocumentSummary().getSummaries();
         }
         return this.classesDocumentSummary;
     }
 
     async getClassDocumentListByHref(href: string) {
-        return await new LeaClassDocument(this.cookieManager, href).get();
+        return await new LeaClassDocument(href).getDocument();
     }
 
     private isCacheLoaded() {
         return (this.classesCache.length > 0);
     }
 
-    static async build(loggedCookies: string[]): Promise<LeaManager> {
-        const cookieManager = new CookieManager(loggedCookies);
-        await new LeaCookie(cookieManager).get();
-        await new LeaSkyCookie(cookieManager).get();
-        const manager = new LeaManager(cookieManager);
+    static async build(): Promise<LeaManager> {
+        await new LeaCookie().run();
+        // await new LeaSkyCookie().run();
+        const manager = new LeaManager();
         await manager.getAllClasses();
         return manager;
     }

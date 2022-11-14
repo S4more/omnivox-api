@@ -1,30 +1,36 @@
 import request from "request";
-import {OmnivoxModule, Params} from "./OmnivoxModule";
-import { CookieManager } from "../CookieManager";
-import {LeaLoginError} from "../errors/LoginError";
+import { OmnivoxModule } from "./OmnivoxModule";
+import { LeaLoginError } from "../errors/LoginError";
 
 export class Login extends OmnivoxModule<void> {
     private readonly url = 'https://dawsoncollege.omnivox.ca/intr/Module/Identification/Login/Login.aspx';
 
-    constructor(cookie: CookieManager,
-                private k: string,
-                private username: string,
-                private password: string) {
-        super(cookie);
+    constructor(private username: string, private password: string) {
+        super();
     }
 
-    protected getParams(cookie: string): Params {
-        return {
-            url: this.url,
-            method: 'POST',
-            cookie,
-            form: {
-                k: this.k,
-                NoDA: this.username,
-                PasswordEtu: this.password
-            },
-        }
-    }
+  public async login() {
+    const kPage = await this.makeGetRequest({
+      url: this.url,
+      query: "",
+    })
+
+    const answer = kPage.data; 
+
+    const init = answer.search("value=\"6") + "value=.".length;
+    const k = answer.substring(init, init + 18);
+
+    const request = await this.makePostRequest({
+      url: this.url,
+      body: {
+        NoDa: this.username,
+        PasswordEtu: this.password,
+        k
+      }
+    })
+
+    return request.data.includes("lea");
+  }
 
     protected parse(body: request.Response): void {
         if (!body.headers["set-cookie"]!.some(cookie => cookie.includes("TKSDAWP"))) {
