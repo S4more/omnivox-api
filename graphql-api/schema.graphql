@@ -6,16 +6,16 @@ type AuthPayload {
   token: String
 }
 
-type CurrentGrade {
-  percentage: String!
-  point: Float!
-  total: Float!
-}
-
 type LeaClass {
+  average: Float
   code: String!
-  sharedInfo: SharedClassInfo!
-  userInfo: UserClass!
+  distributedAssignments: Int
+  distributedDocuments: Int
+  grade: String
+  median: Float
+  schedule: [String!]
+  teacher: String!
+  title: String!
 }
 
 enum LeaClassLookupType {
@@ -23,35 +23,10 @@ enum LeaClassLookupType {
   NAME
 }
 
-type Link {
-  description: String!
-  id: Int!
-  url: String!
-}
-
 type Mutation {
   login(id: String!, password: String!): AuthPayload!
-  post(description: String!, url: String!): Link!
 }
 
 type Query {
-  feed: [Link!]!
-  leaClass(lookUpType: LeaClassLookupType!, search: String!): LeaClass!
-}
-
-type SharedClassInfo {
-  average: Int!
-  distributedAssignments: Int!
-  distributedDocuments: Int!
-  median: Int!
-  schedule: [String!]!
-  section: String!
-  teacher: String!
-  title: String!
-}
-
-type UserClass {
-  grade: CurrentGrade!
-  newAssignments: Int!
-  newDocuments: Int!
+  LeaClass(lookUpType: LeaClassLookupType!, search: String!): [LeaClass!]
 }
