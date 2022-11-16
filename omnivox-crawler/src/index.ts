@@ -21,10 +21,4 @@ async function testLea() {
   })
 }
 
-async function testMio() {
-  const mio = await MioManager.build();
-  console.log(await mio.loadMioPreview());
-}
-
-// testLea().then(v => console.log(v));
 export {MioManager};

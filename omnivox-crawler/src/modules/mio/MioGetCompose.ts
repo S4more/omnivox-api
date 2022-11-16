@@ -34,6 +34,7 @@ export default async function getMioCompose(): Promise<MioPostParam> {
   const response = await Requester.makeGetRequest({ url });
 
   const root = parse(response.data);
+  console.log(root);
   const __VIEWSTATE: string = (<any>root.querySelector("#__VIEWSTATE"))._attrs.value;
   const ctl00$cntFormulaire$hidMsgDraftGuid: string = (<any>root.querySelector("#hidMsgDraftGuid"))._attrs.value;
   const ctl00$cntFormulaire$hidAjout: string = (<any>root.querySelector("#hidAjout"))._attrs.value;

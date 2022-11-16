@@ -3,32 +3,34 @@ import * as jwt from "jsonwebtoken";
 import { login } from "omnivox-crawler";
 
 export const AuthPayload = objectType({
-    name: "AuthPayload",
-    definition(t) {
-        t.nullable.string("token");
-    },
+  name: "AuthPayload",
+  definition(t) {
+    t.nullable.string("token");
+  },
 });
 
 export const AuthMutation = extendType({
-    type: "Mutation",
-    definition(t) {
-        t.nonNull.field("login", {
-            type: "AuthPayload",
-            args: {
-                id: nonNull(stringArg()),
-                password: nonNull(stringArg())
-            },
-            async resolve(parent, args, context) {
-                try {
-                    await login(args.id, args.password);
-                } catch (error) {
-                    return {}
-                }
-                const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "60m"});
-                return {
-                    token
-                }
-            }
-        })
-    }
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("login", {
+      type: "AuthPayload",
+      args: {
+        id: nonNull(stringArg()),
+        password: nonNull(stringArg())
+      },
+      async resolve(parent, args, context) {
+        try {
+          await login(args.id, args.password);
+          context.leaCache.addClassesFromUser(args.id, args.password);
+        } catch (error) {
+          console.log(error);
+          return {}
+        }
+        const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "60m"});
+        return {
+          token
+        }
+      }
+    })
+  }
 })

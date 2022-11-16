@@ -32,38 +32,19 @@ export interface NexusGenObjects {
   AuthPayload: { // root type
     token?: string | null; // String
   }
-  CurrentGrade: { // root type
-    percentage: string; // String!
-    point: number; // Float!
-    total: number; // Float!
-  }
   LeaClass: { // root type
+    average?: number | null; // Float
     code: string; // String!
-    sharedInfo: NexusGenRootTypes['SharedClassInfo']; // SharedClassInfo!
-    userInfo: NexusGenRootTypes['UserClass']; // UserClass!
-  }
-  Link: { // root type
-    description: string; // String!
-    id: number; // Int!
-    url: string; // String!
-  }
-  Mutation: {};
-  Query: {};
-  SharedClassInfo: { // root type
-    average: number; // Int!
-    distributedAssignments: number; // Int!
-    distributedDocuments: number; // Int!
-    median: number; // Int!
-    schedule: string[]; // [String!]!
-    section: string; // String!
+    distributedAssignments?: number | null; // Int
+    distributedDocuments?: number | null; // Int
+    grade?: string | null; // String
+    median?: number | null; // Float
+    schedule?: string[] | null; // [String!]
     teacher: string; // String!
     title: string; // String!
   }
-  UserClass: { // root type
-    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
-    newAssignments: number; // Int!
-    newDocuments: number; // Int!
-  }
+  Mutation: {};
+  Query: {};
 }
 
 export interface NexusGenInterfaces {
@@ -80,43 +61,22 @@ export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string | null; // String
   }
-  CurrentGrade: { // field return type
-    percentage: string; // String!
-    point: number; // Float!
-    total: number; // Float!
-  }
   LeaClass: { // field return type
+    average: number | null; // Float
     code: string; // String!
-    sharedInfo: NexusGenRootTypes['SharedClassInfo']; // SharedClassInfo!
-    userInfo: NexusGenRootTypes['UserClass']; // UserClass!
-  }
-  Link: { // field return type
-    description: string; // String!
-    id: number; // Int!
-    url: string; // String!
-  }
-  Mutation: { // field return type
-    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    post: NexusGenRootTypes['Link']; // Link!
-  }
-  Query: { // field return type
-    feed: NexusGenRootTypes['Link'][]; // [Link!]!
-    leaClass: NexusGenRootTypes['LeaClass']; // LeaClass!
-  }
-  SharedClassInfo: { // field return type
-    average: number; // Int!
-    distributedAssignments: number; // Int!
-    distributedDocuments: number; // Int!
-    median: number; // Int!
-    schedule: string[]; // [String!]!
-    section: string; // String!
+    distributedAssignments: number | null; // Int
+    distributedDocuments: number | null; // Int
+    grade: string | null; // String
+    median: number | null; // Float
+    schedule: string[] | null; // [String!]
     teacher: string; // String!
     title: string; // String!
   }
-  UserClass: { // field return type
-    grade: NexusGenRootTypes['CurrentGrade']; // CurrentGrade!
-    newAssignments: number; // Int!
-    newDocuments: number; // Int!
+  Mutation: { // field return type
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+  }
+  Query: { // field return type
+    LeaClass: NexusGenRootTypes['LeaClass'][] | null; // [LeaClass!]
   }
 }
 
@@ -124,43 +84,22 @@ export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     token: 'String'
   }
-  CurrentGrade: { // field return type name
-    percentage: 'String'
-    point: 'Float'
-    total: 'Float'
-  }
   LeaClass: { // field return type name
+    average: 'Float'
     code: 'String'
-    sharedInfo: 'SharedClassInfo'
-    userInfo: 'UserClass'
-  }
-  Link: { // field return type name
-    description: 'String'
-    id: 'Int'
-    url: 'String'
-  }
-  Mutation: { // field return type name
-    login: 'AuthPayload'
-    post: 'Link'
-  }
-  Query: { // field return type name
-    feed: 'Link'
-    leaClass: 'LeaClass'
-  }
-  SharedClassInfo: { // field return type name
-    average: 'Int'
     distributedAssignments: 'Int'
     distributedDocuments: 'Int'
-    median: 'Int'
+    grade: 'String'
+    median: 'Float'
     schedule: 'String'
-    section: 'String'
     teacher: 'String'
     title: 'String'
   }
-  UserClass: { // field return type name
-    grade: 'CurrentGrade'
-    newAssignments: 'Int'
-    newDocuments: 'Int'
+  Mutation: { // field return type name
+    login: 'AuthPayload'
+  }
+  Query: { // field return type name
+    LeaClass: 'LeaClass'
   }
 }
 
@@ -170,13 +109,9 @@ export interface NexusGenArgTypes {
       id: string; // String!
       password: string; // String!
     }
-    post: { // args
-      description: string; // String!
-      url: string; // String!
-    }
   }
   Query: {
-    leaClass: { // args
+    LeaClass: { // args
       lookUpType: NexusGenEnums['LeaClassLookupType']; // LeaClassLookupType!
       search: string; // String!
     }
