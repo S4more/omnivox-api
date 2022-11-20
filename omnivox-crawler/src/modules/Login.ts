@@ -18,5 +18,5 @@ export default async function Login(username: string, password: string) {
     }
   })
 
-  return request.data.includes("lea");
+  return request.data.includes("headerNavbarLink");
 }

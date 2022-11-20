@@ -19,17 +19,16 @@ export const AuthMutation = extendType({
         password: nonNull(stringArg())
       },
       async resolve(parent, args, context) {
-        try {
-          await login(args.id, args.password);
+        console.log(args.id, args.password);
+        if (await login(args.id, args.password)) {
           context.leaCache.addClassesFromUser(args.id, args.password);
-        } catch (error) {
-          console.log(error);
-          return {}
+          const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "60m"});
+          return {
+            token
+          }
         }
-        const token = jwt.sign({id: args.id}, "GraphQL-is-aw3some", {expiresIn: "60m"});
-        return {
-          token
-        }
+        console.log("wrong username")
+        throw Error("Wrong username!");
       }
     })
   }
