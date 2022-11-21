@@ -2,6 +2,7 @@ import { createEffect } from "solid-js";
 import { createRouteAction, Title, useNavigate } from "solid-start";
 import toast, { Toaster } from "solid-toast";
 import { useLeaContext } from "~/components/provider/omnivox-provider";
+import { instance } from "~/graphql-client";
 import loginRequest from "~/graphql-client/login";
 
 import style from "./login.module.scss";
@@ -15,13 +16,13 @@ export default function Login() {
     const password = formData.get("password") as string | undefined;
     if (username && password) {
       const loading = toast.loading("just a sec");
-      const response = await loginRequest.execute({id: username, password});
-      if (!response.token) {
-        toast.error("Couldn't log in.", {id: loading});
-        return;
+      try {
+        const response = await loginRequest.execute({id: username, password});
+        toast.success("Logged in", {id: loading});
+        return response.token;
+      } catch (error) {
+        toast.error("Wrong username.", {id: loading});
       }
-      toast.success("Logged in", {id: loading});
-      return response.token;
     } else {
       toast.error("Please write username and password.");
     }
@@ -29,9 +30,10 @@ export default function Login() {
 
   createEffect(() => {
     if (logging.result) {
-      leaSetters.setOmnivoxToken(logging.result);
-      console.log("Inside.");
-      navigate("/");
+      leaSetters.setOmnivoxToken("" + logging.result);
+      instance.defaults.headers.common = {Authorization: 'Bearer ' + logging.result};
+      console.log(instance);
+      navigate("/dashboard");
     }
   })
 
@@ -42,11 +44,11 @@ export default function Login() {
         <h1> Nihilvox </h1>
         <h2> Login and be free </h2>
         <Form class={style.loginWrapper}>
-          <label for="username">Omnivox ID</label>
+          <label for="username">Student ID</label>
           <input type="text" name="username"/>
           <label for="password">Password</label>
           <input type="password" name="password"/>
-          <input type="submit" value="submit" disabled={logging.pending}/>
+          <input type="submit" value="LOGIN" disabled={logging.pending}/>
         </Form>
       </div>
 

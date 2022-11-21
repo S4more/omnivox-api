@@ -1,0 +1,50 @@
+@import "../../colors";
+
+.cardWrapper {
+  display: flex;
+  background-color: $dark-foreground;
+  flex-direction: column;
+  min-width: 15rem;
+  width: 80%;
+  max-width: 50vw;
+  padding: 1em;
+  border-radius: 0.5em;
+
+  .body {
+    text {
+      color: $low-contrast-white-foreground;
+    }
+
+    .new {
+      color: rgb(222, 230, 233);
+    }
+
+    .relevant {
+      display: inline;
+      color: white;
+      margin: 0;
+      font-weight: 200;
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      margin: 0;
+      font-size: 1em;
+      color: $low-contrast-white-foreground;
+    }
+
+    .main {
+      font-weight: 400;
+      text-transform: capitalize;
+    }
+
+    .sub {
+      font-weight: 300;
+    }
+  }
+
+}

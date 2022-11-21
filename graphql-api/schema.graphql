@@ -24,7 +24,7 @@ enum LeaClassLookupType {
 }
 
 type Mutation {
-  login(id: String!, password: String!): AuthPayload!
+  login(id: String!, password: String!): AuthPayload
 }
 
 type Query {

@@ -31,6 +31,7 @@ export default function Root() {
               <A href="/">Index</A>
               <A href="/about">About</A>
               <A href="/login">Login</A>
+              <A href="/dashboard">Dashboard</A>
             <Routes>
               <FileRoutes />
             </Routes>

@@ -18,5 +18,6 @@ export default async function Login(username: string, password: string) {
     }
   })
 
+  console.log(request.data.includes("headerNavbarLink"));
   return request.data.includes("headerNavbarLink");
 }
