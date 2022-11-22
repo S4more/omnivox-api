@@ -32,6 +32,12 @@ export interface NexusGenObjects {
   AuthPayload: { // root type
     token?: string | null; // String
   }
+  Document: { // root type
+    description: string; // String!
+    name: string; // String!
+    posted: string; // String!
+    viewed: boolean; // Boolean!
+  }
   LeaClass: { // root type
     average?: number | null; // Float
     code: string; // String!
@@ -61,6 +67,12 @@ export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string | null; // String
   }
+  Document: { // field return type
+    description: string; // String!
+    name: string; // String!
+    posted: string; // String!
+    viewed: boolean; // Boolean!
+  }
   LeaClass: { // field return type
     average: number | null; // Float
     code: string; // String!
@@ -83,6 +95,12 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   AuthPayload: { // field return type name
     token: 'String'
+  }
+  Document: { // field return type name
+    description: 'String'
+    name: 'String'
+    posted: 'String'
+    viewed: 'Boolean'
   }
   LeaClass: { // field return type name
     average: 'Float'

@@ -6,6 +6,13 @@ type AuthPayload {
   token: String
 }
 
+type Document {
+  description: String!
+  name: String!
+  posted: String!
+  viewed: Boolean!
+}
+
 type LeaClass {
   average: Float
   code: String!
