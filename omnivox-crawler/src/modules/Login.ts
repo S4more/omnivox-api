@@ -18,5 +18,6 @@ export default async function Login(username: string, password: string) {
     }
   })
 
-  return request.data.includes("lea");
+  console.log(request.data.includes("headerNavbarLink"));
+  return request.data.includes("headerNavbarLink");
 }

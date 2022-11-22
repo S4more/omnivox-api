@@ -1,0 +1,67 @@
+$dark-foreground: #0e1827;
+$background: #030a14;
+$call-to-action: #4030a6;
+$low-contrast-white-foreground: #c0c0c6;
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
+  justify-content: center;
+
+  h1, h2 {
+    margin: 0;
+    color: white;
+  }
+
+  h2 {
+    font-weight: 200;
+  }
+
+  
+}
+
+.loginWrapper {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  // background-color: #0c1625;
+  min-width: 300px;
+  gap: 0.5em;
+  border-radius: 1em;
+  // box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+  label {
+    color: $low-contrast-white-foreground;
+    text-align: left;
+  }
+
+  input {
+    padding: 0.5em;
+    border-radius: 0.2em;
+    border: 0px;
+  }
+
+  input[type=password],
+  input[type=text] {
+    color: white;
+    background-color: $dark-foreground;
+  }
+
+  input[type=submit] {
+    background-color: $call-to-action;
+    font-weight: 800;
+    background: rgb(64,48,166);
+    background: linear-gradient(90deg, rgba(64,48,166,1) 0%, rgba(95,76,219,1) 100%);
+  }
+
+  input[type=text]:focus {
+    background-color: white;
+    border: 0px;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }
+}
